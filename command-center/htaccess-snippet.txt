@@ -1,0 +1,18 @@
+# BEGIN BDD data protection
+# Blocks direct web downloads of the Command Center / Payout Calculator data files
+# (bdd-jobs.json, bdd-supply.json, bdd-todos.json, bdd-inventory.json).
+# The PHP scripts read these files straight from disk, so they keep working.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^bdd-[^/]*\.json$ - [F,L]
+</IfModule>
+<FilesMatch "^bdd-.*\.json$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+# END BDD data protection

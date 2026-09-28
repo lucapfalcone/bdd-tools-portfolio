@@ -1,0 +1,97 @@
+====================================================
+ BDD COMMAND CENTER — HOW TO USE
+ Springfield + Riverside team dashboard & Slack
+====================================================
+
+Who this is for: Owners and Regional Managers (Jordan, Avery, Harlan, Sawyer).
+
+----------------------------------------------------
+1. SLACK
+----------------------------------------------------
+Workspace: [insert Slack workspace link here]
+
+Channels:
+  #springfield-ops     - Springfield day-to-day chatter
+  #riverside-ops   - Riverside day-to-day chatter
+  #leadership      - owners + managers, both locations
+  #supply-orders   - AUTOMATIC feed only. Every time someone
+                     submits or updates a supply request on the
+                     dashboard, it posts here on its own. You
+                     don't need to (and generally shouldn't)
+                     type in this channel - just watch it.
+
+Tip: if a conversation is relevant to both locations or needs
+an owner's eyes, post it in #leadership rather than DMing one
+person - keeps everyone in the loop.
+
+----------------------------------------------------
+2. THE DASHBOARD (Command Center)
+----------------------------------------------------
+URL: [insert Command Center page URL here]
+
+Log in with your normal WordPress login, then open that page.
+Worth bookmarking - this is where Supply Orders and To-Dos live.
+
+----------------------------------------------------
+3. SUPPLY ORDERS - requesting something you're low on
+----------------------------------------------------
+Under "Supply Orders":
+  1. Pick your Location (Springfield or Riverside).
+  2. Pick who's requesting it.
+  3. Pick the Item from the dropdown. If it's not listed,
+     choose "Other (type below)" and type the item name.
+  4. Enter the Quantity.
+  5. Add a note if it's time-sensitive (e.g. "need before Saturday").
+  6. Hit "Send Request."
+
+That's it - it shows up in the list below and posts automatically
+to #supply-orders in Slack.
+
+STATUSES - a request moves through three stages:
+  Requested -> Ordered -> Received
+
+To move a request forward, find it in the list and click the
+"Mark Ordered" / "Mark Received" button. It'll ask who's making
+the update - type your name. This keeps a record of who ordered
+what and when, so nothing gets lost or double-ordered.
+
+Use the filter buttons at the top of the list (All Locations /
+Springfield / Riverside, and All / Requested / Ordered / Received)
+to narrow down what you're looking at.
+
+----------------------------------------------------
+4. TO-DOS
+----------------------------------------------------
+Under "To-Dos":
+  1. Type the task.
+  2. Pick a Group: Springfield, Riverside, or Leadership (for
+     things that aren't tied to one location).
+  3. Assign it to someone (optional).
+  4. Set a due date (optional, defaults to today).
+  5. Hit "Add Task."
+
+Use the Springfield / Riverside / Leadership tabs to switch which
+list you're looking at. Check the box next to a task to mark it
+done - it'll move to the bottom with a strikethrough. Overdue
+open tasks show their due date in red.
+
+Delete the "x" on a request or task if it was added by mistake
+or is no longer needed - this can't be undone, so double check.
+
+----------------------------------------------------
+5. A FEW GROUND RULES
+----------------------------------------------------
+- Enter real quantities on supply requests - owners use these
+  to actually place orders, so guessing high "just in case"
+  throws that off.
+- Move a request to "Ordered" / "Received" as soon as it happens,
+  not at the end of the week - that's the whole point of tracking
+  it here instead of by text.
+- Check off to-dos when they're done so the list stays useful for
+  everyone, not just a running history.
+- If something looks broken or you're not sure who's using this
+  yet, ask in #leadership.
+
+====================================================
+Questions or something not working? Ask Avery.
+====================================================

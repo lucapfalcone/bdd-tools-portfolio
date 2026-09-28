@@ -1,0 +1,560 @@
+<!-- BDD Command Center — Supply Orders + To-Dos — paste into a WordPress Custom HTML block -->
+<div id="bdd-cc">
+<style>
+#bdd-cc *{box-sizing:border-box;margin:0;padding:0;}
+#bdd-cc{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:transparent;color:#F5F7FA;}
+/* Location theme — Springfield = Diamond Ice (default), Riverside = Forge Copper (brand board).
+   Every accent on the page reads these, so the location switch recolors everything. */
+#bdd-cc{--acc:#7FD8E8;--acc-rgb:127,216,232;--acc-2:#9de4ef;--warn:#F2CC4B;--warn-rgb:242,204,75;}
+#bdd-cc.loc-riv{--acc:#E8B27F;--acc-rgb:232,178,127;--acc-2:#f2c9a0;}
+#bdd-cc [hidden]{display:none!important;}
+#bdd-cc .cc-shell{max-width:1240px;margin:0 auto;padding:clamp(16px,4vw,40px);display:flex;flex-direction:column;gap:clamp(20px,3vw,32px);}
+
+#bdd-cc h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;color:#F5F7FA;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+
+/* Facet cut — borrowed from the Payout Calculator so both tools read as one system */
+#bdd-cc .bdd-cc-facet{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));}
+#bdd-cc .bdd-cc-facet-sm{clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+
+/* ── HERO: this week's Net Profit + satellite stats ────────────── */
+#bdd-cc .cc-hero-row{display:grid;grid-template-columns:minmax(240px,1.1fr) minmax(0,2fr);gap:clamp(10px,2vw,16px);}
+#bdd-cc .cc-hero{background:linear-gradient(135deg,var(--acc) 0%,var(--acc-2) 100%);color:#0B0D10;padding:clamp(20px,3vw,28px);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;min-height:150px;}
+#bdd-cc .cc-hero-label{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(11,13,16,.62);margin-bottom:6px;}
+#bdd-cc .cc-hero-val{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4vw,42px);font-weight:700;letter-spacing:-1px;line-height:1;}
+#bdd-cc .cc-hero-sub{font-size:11px;color:rgba(11,13,16,.6);margin-top:8px;}
+#bdd-cc .cc-hero-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:700;color:#0B0D10;text-decoration:none;background:rgba(11,13,16,.1);padding:8px 14px;border-radius:999px;width:fit-content;transition:background .2s;}
+#bdd-cc .cc-hero-link:hover{background:rgba(11,13,16,.18);}
+
+#bdd-cc .cc-stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:clamp(8px,1.5vw,12px);}
+#bdd-cc .cc-stat-card{background:#12151a;border:1px solid #23272e;padding:14px 14px 12px;display:flex;flex-direction:column;justify-content:center;}
+#bdd-cc .cc-stat-label{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+#bdd-cc .cc-stat-val{font-family:'Space Grotesk',sans-serif;font-size:clamp(20px,2.4vw,26px);font-weight:700;color:#F5F7FA;letter-spacing:-.4px;line-height:1;font-variant-numeric:tabular-nums;}
+#bdd-cc .cc-stat-card.warn .cc-stat-val{color:var(--warn);}
+
+/* ── Two modules side by side on anything wider than a phone ───── */
+#bdd-cc .cc-modules{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.5vw,24px);align-items:start;}
+#bdd-cc .cc-module{display:flex;flex-direction:column;gap:12px;}
+
+#bdd-cc .cc-panel{background:#12151a;border:1px solid #23272e;padding:18px 16px 16px;}
+
+/* Forms */
+#bdd-cc .cc-field{margin-bottom:10px;}
+#bdd-cc .cc-field label{display:block;font-size:11px;font-weight:500;color:#8b93a1;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;}
+#bdd-cc input[type=text],#bdd-cc input[type=number],#bdd-cc input[type=date],#bdd-cc select,#bdd-cc textarea{
+  width:100%;padding:11px 14px;font-size:15px;border:1px solid #23272e;border-radius:10px;background:#0d0f13;color:#F5F7FA;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;font-family:inherit;
+}
+#bdd-cc input:focus,#bdd-cc select:focus,#bdd-cc textarea:focus{border-color:var(--acc);}
+#bdd-cc input::placeholder,#bdd-cc textarea::placeholder{color:#3a3f47;}
+#bdd-cc input[type=date]{color-scheme:dark;}
+#bdd-cc textarea{resize:vertical;min-height:44px;}
+#bdd-cc .cc-two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;}
+#bdd-cc .cc-item-other{display:none;margin-top:8px;}
+#bdd-cc .cc-submit{width:100%;padding:12px;margin-top:6px;background:var(--acc);color:#0B0D10;border:none;border-radius:10px;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;}
+#bdd-cc .cc-submit:hover{opacity:.9;}
+
+/* Filter pills */
+#bdd-cc .cc-filters{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;}
+#bdd-cc .bdd-cc-pill{background:transparent;border:1px solid rgba(255,255,255,0.16);color:rgba(245,247,250,0.5);font-size:12px;font-weight:500;padding:6px 16px;border-radius:20px;cursor:pointer;transition:all .2s;outline:none;-webkit-appearance:none;}
+#bdd-cc .bdd-cc-pill:hover{border-color:rgba(var(--acc-rgb),0.45);color:rgba(245,247,250,0.8);}
+#bdd-cc .bdd-cc-pill.active{background:var(--acc);border-color:var(--acc);color:#0B0D10;}
+
+/* Rows */
+#bdd-cc .bdd-cc-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #1c2026;}
+#bdd-cc .bdd-cc-row:last-child{border-bottom:none;}
+#bdd-cc .bdd-cc-row.done .bdd-cc-row-title{text-decoration:line-through;color:#5b6270;}
+#bdd-cc .bdd-cc-row-main{display:flex;align-items:flex-start;gap:10px;min-width:0;}
+#bdd-cc .bdd-cc-row-text{min-width:0;}
+#bdd-cc .bdd-cc-row-title{font-size:14px;font-weight:600;color:#F5F7FA;}
+#bdd-cc .bdd-cc-row-sub{font-size:12px;color:#6b7280;margin-top:2px;}
+#bdd-cc .bdd-cc-row-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+#bdd-cc .bdd-cc-overdue{color:#e2574a;font-weight:600;}
+#bdd-cc .bdd-cc-empty{color:#454b54;font-size:12px;text-align:center;padding:20px 0;}
+
+#bdd-cc .bdd-cc-loc-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px;}
+#bdd-cc .bdd-cc-loc-dot.spr{background:#7FD8E8;}
+#bdd-cc .bdd-cc-loc-dot.riv{background:#E8B27F;}
+
+#bdd-cc .bdd-cc-status-badge{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;padding:4px 9px;border-radius:6px;white-space:nowrap;}
+#bdd-cc .bdd-cc-status-badge.st-requested{background:rgba(var(--warn-rgb),.12);color:var(--warn);}
+#bdd-cc .bdd-cc-status-badge.st-ordered{background:rgba(var(--acc-rgb),.12);color:var(--acc);}
+#bdd-cc .bdd-cc-status-badge.st-received{background:#0a1f12;color:#3ecf8e;}
+
+#bdd-cc .bdd-cc-btn-sm{background:transparent;border:1px solid rgba(255,255,255,0.16);color:#c7cbd1;font-size:11px;font-weight:600;padding:6px 10px;border-radius:8px;cursor:pointer;white-space:nowrap;}
+#bdd-cc .bdd-cc-btn-sm:hover{border-color:var(--acc);color:var(--acc);}
+#bdd-cc .bdd-cc-btn-icon{background:transparent;border:none;color:#5b6270;font-size:18px;line-height:1;cursor:pointer;padding:4px 6px;}
+#bdd-cc .bdd-cc-btn-icon:hover{color:#e2574a;}
+#bdd-cc .bdd-cc-check{width:17px;height:17px;accent-color:var(--acc);cursor:pointer;margin-top:2px;flex-shrink:0;}
+
+/* ── Inventory module (full-width, below the two side-by-side ones) ── */
+#bdd-cc .cc-module-full{display:flex;flex-direction:column;gap:12px;}
+#bdd-cc .cc-inv-form{display:grid;grid-template-columns:2fr 1.2fr 1fr 90px 1fr 2fr auto;gap:10px;align-items:end;}
+#bdd-cc .cc-inv-form .cc-field{margin-bottom:0;}
+#bdd-cc .cc-inv-form .cc-submit{width:auto;margin-top:0;padding:12px 18px;white-space:nowrap;}
+@media(max-width:760px){ #bdd-cc .cc-inv-form{grid-template-columns:1fr 1fr;} #bdd-cc .cc-inv-form .cc-submit{grid-column:1/-1;width:100%;} }
+/* Inventory spreadsheet — one full-width table, rows colour-coded by status */
+#bdd-cc .bdd-cc-inv-summary{font-size:12px;color:#8b93a1;margin-bottom:10px;}
+#bdd-cc .bdd-cc-inv-summary .sev-out{color:#e2574a;font-weight:700;}
+#bdd-cc .bdd-cc-inv-summary .sev-low{color:var(--warn);font-weight:700;}
+#bdd-cc .bdd-cc-inv-tablewrap{overflow-x:auto;border:1px solid #23272e;}
+#bdd-cc .bdd-cc-inv-table{width:100%;border-collapse:collapse;font-size:13px;min-width:660px;}
+#bdd-cc .bdd-cc-inv-table thead th{position:sticky;top:0;background:#12151a;color:#6b7280;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;text-align:left;padding:10px 12px;border-bottom:1px solid #23272e;white-space:nowrap;z-index:1;}
+#bdd-cc .bdd-cc-inv-table thead th.s{cursor:pointer;user-select:none;}
+#bdd-cc .bdd-cc-inv-table thead th.s:hover{color:#F5F7FA;}
+#bdd-cc .bdd-cc-inv-table td{padding:7px 12px;border-bottom:1px solid #1c2026;vertical-align:middle;}
+#bdd-cc .bdd-cc-inv-table tbody tr:last-child td{border-bottom:none;}
+#bdd-cc .bdd-cc-inv-name{font-weight:600;color:#F5F7FA;white-space:nowrap;}
+#bdd-cc .bdd-cc-inv-cat{color:#8b93a1;white-space:nowrap;}
+#bdd-cc .bdd-cc-inv-tr.ok{background:#0f1512;}
+#bdd-cc .bdd-cc-inv-tr.low{background:rgba(var(--warn-rgb),.13);}
+#bdd-cc .bdd-cc-inv-tr.out{background:rgba(226,87,74,.15);}
+#bdd-cc .bdd-cc-inv-tr.low td:first-child{box-shadow:inset 3px 0 0 var(--warn);}
+#bdd-cc .bdd-cc-inv-tr.out td:first-child{box-shadow:inset 3px 0 0 #e2574a;}
+#bdd-cc .bdd-cc-inv-tr.out .bdd-cc-inv-name{color:#ff8f83;}
+#bdd-cc .bdd-cc-inv-tr:hover{filter:brightness(1.18);}
+#bdd-cc .bdd-cc-inv-qty{width:64px!important;padding:6px 8px!important;font-size:13px!important;text-align:center;background:#0d0f13;}
+#bdd-cc .bdd-cc-inv-status{width:auto!important;padding:6px 8px!important;font-size:12px!important;font-weight:700;background:#0d0f13;}
+#bdd-cc .bdd-cc-inv-status.ok{color:#3ecf8e;}
+#bdd-cc .bdd-cc-inv-status.low{color:var(--warn);}
+#bdd-cc .bdd-cc-inv-status.out{color:#e2574a;}
+#bdd-cc .bdd-cc-inv-note{width:100%;min-width:120px;padding:6px 8px!important;font-size:12px!important;background:transparent;border-color:transparent;}
+#bdd-cc .bdd-cc-inv-note:hover,#bdd-cc .bdd-cc-inv-note:focus{background:#0d0f13;border-color:#23272e!important;}
+#bdd-cc .bdd-cc-inv-delcell{text-align:center;}
+
+/* ── RESTOCK BOARD — at-a-glance stock + one-tap updates ───────── */
+#bdd-cc{--rs-out:#ff6b5e;--rs-low:var(--warn);--rs-ok:#3ecf8e;--rs-cyan:var(--acc);--rs-line:#232830;--rs-panel:#12151a;--rs-sunk:#0c0e12;--rs-mute:#7a8290;}
+#bdd-cc .cc-restock{background:radial-gradient(900px 260px at 0% 0%,rgba(var(--acc-rgb),.08),transparent 65%),#0f1216;border:1px solid #23272e;padding:clamp(16px,2.6vw,28px);display:flex;flex-direction:column;gap:18px;}
+#bdd-cc .rs-head{display:flex;align-items:flex-end;justify-content:space-between;gap:8px 16px;flex-wrap:wrap;}
+#bdd-cc .rs-title{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:clamp(24px,3vw,32px);font-weight:700;letter-spacing:-.7px;color:#F5F7FA;line-height:1.05;}
+#bdd-cc .rs-sub{font-size:12px;color:var(--rs-mute);}
+#bdd-cc .rs-sub kbd,#bdd-cc .rs-search kbd{font-family:inherit;font-size:11px;font-weight:700;color:#aab1bc;background:#1a1e25;border:1px solid #2c323b;border-bottom-width:2px;border-radius:6px;padding:1px 6px;}
+#bdd-cc #bdd-cc-restock{display:flex;flex-direction:column;gap:14px;}
+/* If the script never replaces the placeholder (stale cached copy), show a hint after 6s */
+#bdd-cc .rs-stuck{display:block;margin-top:8px;color:var(--warn);font-size:12px;opacity:0;animation:rsShowHint .3s ease 6s forwards;}
+@keyframes rsShowHint{to{opacity:1;}}
+
+/* SPR | RIV location toggle */
+#bdd-cc .rs-head .rs-sub{flex-basis:100%;}
+#bdd-cc .rs-loc{display:inline-flex;gap:3px;padding:4px;background:var(--rs-sunk);border:1px solid var(--rs-line);border-radius:12px;}
+#bdd-cc .rs-loc button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:9px;font-family:inherit;font-size:14px;font-weight:700;letter-spacing:0;text-transform:none;color:#8b93a1;transition:background .15s,color .15s;}
+#bdd-cc .rs-loc button span{font-size:10px;font-weight:800;letter-spacing:.8px;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.08);}
+#bdd-cc .rs-loc button:hover{color:#F5F7FA;}
+#bdd-cc .rs-loc button:focus-visible{outline:2px solid var(--rs-cyan);}
+#bdd-cc .rs-loc button.on{background:var(--rs-cyan);color:#0B0D10;}
+#bdd-cc .rs-loc button.on span{background:rgba(11,13,16,.14);}
+#bdd-cc .rs-loc-sm button{height:30px;padding:0 12px;font-size:12px;}
+
+/* KPI tiles + health panel */
+#bdd-cc .rs-dash{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:12px;}
+#bdd-cc .rs-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+#bdd-cc .rs-kpi{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;text-align:left;min-height:132px;padding:16px 18px 14px;background:var(--rs-panel);border:1px solid var(--rs-line);border-radius:16px;color:#F5F7FA;font-family:inherit;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none;}
+#bdd-cc .rs-kpi:hover{transform:translateY(-2px);border-color:#3a414c;}
+#bdd-cc .rs-kpi:focus-visible{outline:2px solid var(--rs-cyan);outline-offset:2px;}
+#bdd-cc .rs-kpi-n{font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,5vw,64px);font-weight:700;line-height:.9;letter-spacing:-2px;font-variant-numeric:tabular-nums;}
+#bdd-cc .rs-kpi-l{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.9px;margin-top:10px;}
+#bdd-cc .rs-kpi-s{font-size:11px;color:var(--rs-mute);margin-top:2px;}
+#bdd-cc .rs-kpi.out{background:linear-gradient(160deg,rgba(226,87,74,.2),rgba(226,87,74,.06));border-color:rgba(226,87,74,.45);}
+#bdd-cc .rs-kpi.out .rs-kpi-n,#bdd-cc .rs-kpi.out .rs-kpi-l{color:var(--rs-out);}
+#bdd-cc .rs-kpi.low{background:linear-gradient(160deg,rgba(var(--warn-rgb),.17),rgba(var(--warn-rgb),.05));border-color:rgba(var(--warn-rgb),.4);}
+#bdd-cc .rs-kpi.low .rs-kpi-n,#bdd-cc .rs-kpi.low .rs-kpi-l{color:var(--rs-low);}
+#bdd-cc .rs-kpi.need .rs-kpi-n,#bdd-cc .rs-kpi.need .rs-kpi-l{color:var(--rs-cyan);}
+#bdd-cc .rs-kpi.ok .rs-kpi-n,#bdd-cc .rs-kpi.ok .rs-kpi-l{color:var(--rs-ok);}
+#bdd-cc .rs-kpi.hot{animation:rsGlow 2.4s ease-in-out infinite;}
+@keyframes rsGlow{0%,100%{box-shadow:0 0 0 rgba(226,87,74,0);}50%{box-shadow:0 0 26px rgba(226,87,74,.32);}}
+#bdd-cc .rs-kpi.on{border-color:#F5F7FA;}
+#bdd-cc .rs-kpi.on::after{content:'Showing';position:absolute;top:12px;right:12px;font-size:9px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;padding:4px 8px;border-radius:999px;background:#F5F7FA;color:#0B0D10;}
+
+#bdd-cc .rs-health{display:flex;flex-direction:column;gap:12px;min-width:0;padding:16px 18px;background:var(--rs-panel);border:1px solid var(--rs-line);border-radius:16px;}
+#bdd-cc .rs-health-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;flex-wrap:wrap;}
+#bdd-cc .rs-health-pct{font-size:12px;font-weight:700;color:var(--rs-mute);text-transform:uppercase;letter-spacing:.8px;}
+#bdd-cc .rs-health-pct b{font-family:'Space Grotesk',sans-serif;font-size:26px;color:#F5F7FA;letter-spacing:-.5px;margin-right:4px;}
+#bdd-cc .rs-legend{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--rs-mute);font-variant-numeric:tabular-nums;}
+#bdd-cc .rs-legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-left:7px;}
+#bdd-cc .rs-legend i.out,#bdd-cc .rs-bar .out,#bdd-cc .rs-tile.out{background:#e2574a;}
+#bdd-cc .rs-legend i.low,#bdd-cc .rs-bar .low,#bdd-cc .rs-tile.low{background:var(--warn);}
+#bdd-cc .rs-legend i.ok,#bdd-cc .rs-bar .ok{background:var(--rs-ok);}
+#bdd-cc .rs-bar{display:flex;gap:3px;height:12px;border-radius:6px;overflow:hidden;background:#1c2026;}
+#bdd-cc .rs-bar span{display:block;height:100%;transition:width .4s ease;}
+#bdd-cc .rs-heat{display:flex;flex-direction:column;gap:7px;}
+#bdd-cc .rs-heat-row{display:grid;grid-template-columns:140px minmax(0,1fr);gap:10px;align-items:center;}
+#bdd-cc .rs-heat-cat{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0;padding:4px 8px;border-radius:7px;font-size:12px;color:#aab1bc;transition:background .15s,color .15s;}
+#bdd-cc .rs-heat-cat span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#bdd-cc .rs-heat-cat:hover{background:rgba(255,255,255,.05);color:#F5F7FA;}
+#bdd-cc .rs-heat-cat:focus-visible{outline:2px solid var(--rs-cyan);}
+#bdd-cc .rs-heat-row.on .rs-heat-cat{background:#F5F7FA;color:#0B0D10;}
+#bdd-cc .rs-heat-cat b{flex-shrink:0;font-size:10px;font-weight:800;padding:1px 7px;border-radius:999px;background:rgba(226,87,74,.18);color:var(--rs-out);}
+#bdd-cc .rs-heat-row.on .rs-heat-cat b{background:rgba(11,13,16,.12);color:#0B0D10;}
+#bdd-cc .rs-heat-cat i{flex-shrink:0;font-style:normal;font-size:11px;color:var(--rs-ok);}
+#bdd-cc .rs-tiles{display:flex;flex-wrap:wrap;gap:4px;}
+#bdd-cc .rs-tile{all:unset;box-sizing:border-box;width:18px;height:18px;border-radius:4px;background:#1f4d37;cursor:pointer;transition:transform .12s,opacity .2s;}
+#bdd-cc .rs-tile:hover{transform:scale(1.3);}
+#bdd-cc .rs-tile:focus-visible{outline:2px solid var(--rs-cyan);outline-offset:1px;}
+#bdd-cc .rs-tile.dim{opacity:.15;}
+#bdd-cc .rs-hint{font-size:11px;color:#4f5661;}
+
+/* toolbar: search + view switch + category chips */
+#bdd-cc .rs-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;}
+#bdd-cc .rs-search{flex:1 1 260px;display:flex;align-items:center;gap:10px;height:46px;padding:0 12px 0 14px;background:var(--rs-sunk);border:1px solid var(--rs-line);border-radius:12px;color:var(--rs-mute);cursor:text;transition:border-color .2s,box-shadow .2s,color .2s;}
+#bdd-cc .rs-search:focus-within{border-color:var(--rs-cyan);box-shadow:0 0 0 3px rgba(var(--acc-rgb),.15);color:var(--rs-cyan);}
+#bdd-cc .rs-search input{flex:1;min-width:0;height:100%;padding:0;border:0;background:transparent;color:#F5F7FA;font:500 15px/1 inherit;outline:none;-webkit-appearance:none;appearance:none;}
+#bdd-cc .rs-search input::placeholder{color:#4b525c;}
+#bdd-cc .rs-search input::-webkit-search-cancel-button{-webkit-appearance:none;}
+#bdd-cc .rs-seg{display:flex;gap:3px;max-width:100%;padding:4px;overflow-x:auto;background:var(--rs-sunk);border:1px solid var(--rs-line);border-radius:12px;scrollbar-width:none;}
+#bdd-cc .rs-seg::-webkit-scrollbar{display:none;}
+#bdd-cc .rs-seg button{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 12px;border-radius:9px;font-size:13px;font-weight:600;color:#8b93a1;white-space:nowrap;transition:background .15s,color .15s;}
+#bdd-cc .rs-seg button:hover{color:#F5F7FA;background:rgba(255,255,255,.05);}
+#bdd-cc .rs-seg button:focus-visible{outline:2px solid var(--rs-cyan);}
+#bdd-cc .rs-seg button.on{background:#F5F7FA;color:#0B0D10;}
+#bdd-cc .rs-seg .c{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;background:rgba(255,255,255,.08);font-variant-numeric:tabular-nums;}
+#bdd-cc .rs-seg button.on .c{background:rgba(11,13,16,.12);}
+#bdd-cc .rs-chips{display:flex;gap:6px;margin-top:-4px;overflow-x:auto;scrollbar-width:none;}
+#bdd-cc .rs-chips::-webkit-scrollbar{display:none;}
+#bdd-cc .rs-chip{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:999px;border:1px solid rgba(255,255,255,.12);font-size:12px;font-weight:600;color:#aab1bc;white-space:nowrap;transition:all .15s;}
+#bdd-cc .rs-chip span{font-size:11px;color:#6b7280;font-variant-numeric:tabular-nums;}
+#bdd-cc .rs-chip:hover{border-color:rgba(var(--acc-rgb),.5);color:#F5F7FA;}
+#bdd-cc .rs-chip:focus-visible{outline:2px solid var(--rs-cyan);}
+#bdd-cc .rs-chip.on{background:var(--rs-cyan);border-color:var(--rs-cyan);color:#0B0D10;}
+#bdd-cc .rs-chip.on span{color:rgba(11,13,16,.6);}
+#bdd-cc .rs-chip.zero{opacity:.45;}
+
+/* bulk action bar */
+#bdd-cc .rs-bulk{position:sticky;top:12px;z-index:6;display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 12px 10px 16px;background:var(--rs-cyan);color:#0B0D10;border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.4);}
+#bdd-cc .rs-bulk[hidden]{display:none;}
+#bdd-cc .rs-bulk-n{margin-right:auto;font-size:13px;}
+#bdd-cc .rs-bulk-n b{font-family:'Space Grotesk',sans-serif;font-size:18px;margin-right:2px;}
+#bdd-cc .rs-bulk-grp{display:flex;align-items:center;gap:6px;}
+#bdd-cc .rs-bulk-grp label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;opacity:.65;}
+#bdd-cc .rs-bulk select{width:auto;height:36px;padding:0 30px 0 10px;border-radius:9px;border:1px solid rgba(11,13,16,.2);background:rgba(11,13,16,.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%230B0D10' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat right 10px center/10px;color:#0B0D10;font-size:13px;font-weight:600;}
+#bdd-cc .rs-bulk select:focus{border-color:#0B0D10;}
+#bdd-cc .rs-bulk-x{all:unset;cursor:pointer;display:grid;place-items:center;width:32px;height:32px;border-radius:8px;font-size:20px;}
+#bdd-cc .rs-bulk-x:hover{background:rgba(11,13,16,.1);}
+
+/* the list */
+#bdd-cc .rs-list{--rs-cols:28px minmax(200px,1fr) 170px 132px 196px 132px;overflow:hidden;background:var(--rs-panel);border:1px solid var(--rs-line);border-radius:16px;}
+#bdd-cc .rs-colhead{display:grid;grid-template-columns:var(--rs-cols);gap:14px;align-items:center;padding:10px 16px;background:#151920;border-bottom:1px solid var(--rs-line);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#6b7280;}
+#bdd-cc .rs-group{position:relative;display:flex;align-items:center;gap:10px;padding:12px 16px;background:#161a21;border-bottom:1px solid var(--rs-line);}
+#bdd-cc .rs-group::before,#bdd-cc .rs-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;}
+#bdd-cc .rs-group.out::before{background:#e2574a;}
+#bdd-cc .rs-group.low::before{background:var(--warn);}
+#bdd-cc .rs-group.ok::before{background:var(--rs-ok);}
+#bdd-cc .rs-group-t{font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;letter-spacing:.2px;}
+#bdd-cc .rs-group.out .rs-group-t{color:var(--rs-out);}
+#bdd-cc .rs-group.low .rs-group-t{color:var(--rs-low);}
+#bdd-cc .rs-group.ok .rs-group-t{color:var(--rs-ok);}
+#bdd-cc .rs-group-n{font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:rgba(255,255,255,.08);color:#F5F7FA;}
+#bdd-cc .rs-group-s{font-size:12px;color:var(--rs-mute);}
+#bdd-cc .rs-row{position:relative;display:grid;grid-template-columns:var(--rs-cols);gap:14px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--rs-line);transition:background .15s;}
+#bdd-cc .rs-row:last-child{border-bottom:0;}
+#bdd-cc .rs-row.out::before{background:rgba(226,87,74,.85);}
+#bdd-cc .rs-row.low::before{background:rgba(var(--warn-rgb),.8);}
+#bdd-cc .rs-row:hover{background:rgba(255,255,255,.025);}
+#bdd-cc .rs-row.sel{background:rgba(var(--acc-rgb),.08);}
+#bdd-cc .rs-row.flash{animation:rsFlash 1.8s ease;}
+@keyframes rsFlash{0%,40%{background:rgba(var(--acc-rgb),.25);}100%{background:transparent;}}
+#bdd-cc .rs-main{min-width:0;}
+#bdd-cc .rs-name{font-size:15px;font-weight:700;line-height:1.25;color:#F5F7FA;}
+#bdd-cc .rs-row.out .rs-name{color:#ffcdc7;}
+#bdd-cc .rs-meta{margin-top:3px;font-size:12px;color:var(--rs-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#bdd-cc .rs-meta b{margin:0 6px;font-weight:400;color:#3a3f47;}
+#bdd-cc .rs-req{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap;}
+#bdd-cc .rs-req i{width:6px;height:6px;border-radius:50%;background:currentColor;}
+#bdd-cc .rs-req em{font-style:normal;font-weight:500;opacity:.7;}
+#bdd-cc .rs-req.st-requested{background:rgba(var(--warn-rgb),.14);color:var(--rs-low);}
+#bdd-cc .rs-req.st-ordered{background:rgba(var(--acc-rgb),.13);color:var(--rs-cyan);}
+#bdd-cc .rs-req.none{border:1px dashed #333a44;color:#5d6570;}
+
+/* qty stepper */
+#bdd-cc .rs-step{display:inline-flex;align-items:stretch;width:max-content;height:40px;overflow:hidden;background:var(--rs-sunk);border:1px solid var(--rs-line);border-radius:10px;}
+#bdd-cc .rs-step button{all:unset;cursor:pointer;display:grid;place-items:center;width:38px;font-size:18px;color:#aab1bc;transition:background .12s,color .12s;}
+#bdd-cc .rs-step button:hover{background:rgba(255,255,255,.06);color:#F5F7FA;}
+#bdd-cc .rs-step button:active{background:rgba(var(--acc-rgb),.2);}
+#bdd-cc .rs-step button:focus-visible{outline:2px solid var(--rs-cyan);outline-offset:-2px;}
+#bdd-cc .rs-step input[type=number]{width:50px;height:auto;padding:0;border:0;border-radius:0;background:transparent;text-align:center;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;-moz-appearance:textfield;}
+#bdd-cc .rs-step input::-webkit-inner-spin-button,#bdd-cc .rs-step input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
+#bdd-cc .rs-step input:focus{background:rgba(var(--acc-rgb),.08);}
+
+/* 3-way status switch */
+#bdd-cc .rs-seg3{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;height:40px;padding:3px;background:var(--rs-sunk);border:1px solid var(--rs-line);border-radius:10px;}
+#bdd-cc .rs-seg3 button{all:unset;box-sizing:border-box;cursor:pointer;display:grid;place-items:center;border-radius:7px;font-size:12px;font-weight:700;color:#6b7280;transition:background .15s,color .15s;}
+#bdd-cc .rs-seg3 button:hover{background:rgba(255,255,255,.06);color:#F5F7FA;}
+#bdd-cc .rs-seg3 button:focus-visible{outline:2px solid var(--rs-cyan);}
+#bdd-cc .rs-seg3 button.out.on{background:#e2574a;color:#fff;}
+#bdd-cc .rs-seg3 button.low.on{background:var(--warn);color:#1a1504;}
+#bdd-cc .rs-seg3 button.ok.on{background:var(--rs-ok);color:#06140d;}
+
+/* buttons + checkboxes */
+#bdd-cc .rs-btn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;padding:0 16px;border-radius:10px;border:1px solid transparent;font-size:13px;font-weight:700;white-space:nowrap;transition:filter .15s,background .15s,color .15s,border-color .15s;}
+#bdd-cc .rs-btn:focus-visible{outline:2px solid #F5F7FA;outline-offset:2px;}
+#bdd-cc .rs-btn.primary{background:var(--rs-cyan);color:#0B0D10;}
+#bdd-cc .rs-btn.primary:hover{filter:brightness(1.08);}
+#bdd-cc .rs-btn.ghost{border-color:rgba(255,255,255,.14);color:#aab1bc;}
+#bdd-cc .rs-btn.ghost:hover{border-color:var(--rs-cyan);color:var(--rs-cyan);}
+#bdd-cc .rs-btn.dark{background:#0B0D10;color:var(--rs-cyan);}
+#bdd-cc .rs-btn.dark:hover{filter:brightness(1.3);}
+#bdd-cc .rs-btn.darkghost{border-color:rgba(11,13,16,.35);color:#0B0D10;}
+#bdd-cc .rs-btn.darkghost:hover{background:rgba(11,13,16,.08);}
+#bdd-cc .rs-order{justify-self:end;}
+#bdd-cc .rs-check{position:relative;display:inline-grid;place-items:center;flex-shrink:0;width:22px;height:22px;cursor:pointer;}
+#bdd-cc .rs-check input{position:absolute;inset:0;margin:0;opacity:0;cursor:pointer;}
+#bdd-cc .rs-check span{width:20px;height:20px;border-radius:6px;border:1.5px solid #3a414c;background:var(--rs-sunk);transition:all .12s;}
+#bdd-cc .rs-check:hover span{border-color:var(--rs-cyan);}
+#bdd-cc .rs-check input:checked+span{background:var(--rs-cyan) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 10'%3E%3Cpath d='M1 5l3.5 3.5L11 1.5' fill='none' stroke='%230B0D10' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/12px;border-color:var(--rs-cyan);}
+#bdd-cc .rs-check input:focus-visible+span{outline:2px solid var(--rs-cyan);outline-offset:2px;}
+#bdd-cc .rs-empty{padding:34px 16px;text-align:center;font-size:15px;font-weight:700;color:var(--rs-ok);}
+#bdd-cc .rs-empty button{all:unset;cursor:pointer;margin-left:6px;color:var(--rs-cyan);text-decoration:underline;}
+
+/* heat-map quick menu */
+#bdd-cc .rs-menu{position:fixed;z-index:10000;width:240px;padding:14px;background:#171b22;border:1px solid #2e343d;border-radius:14px;box-shadow:0 20px 44px rgba(0,0,0,.55);animation:rsPop .14s ease-out;}
+#bdd-cc .rs-menu[hidden]{display:none;}
+@keyframes rsPop{from{opacity:0;transform:translateY(-4px) scale(.98);}to{opacity:1;transform:none;}}
+#bdd-cc .rs-menu-t{font-size:14px;font-weight:700;color:#F5F7FA;}
+#bdd-cc .rs-menu-s{margin:2px 0 12px;font-size:12px;color:var(--rs-mute);}
+#bdd-cc .rs-menu-go{all:unset;cursor:pointer;display:block;margin-top:10px;font-size:12px;font-weight:700;color:var(--rs-cyan);}
+
+@media(max-width:1080px){ #bdd-cc .rs-list{--rs-cols:28px minmax(180px,1fr) 150px 124px 180px 118px;} }
+@media(max-width:900px){ #bdd-cc .rs-dash{grid-template-columns:1fr;} }
+@media(max-width:820px){
+  #bdd-cc .rs-colhead{display:none;}
+  #bdd-cc .rs-row{grid-template-columns:28px minmax(0,1fr) minmax(0,1fr);grid-template-areas:"chk main main" ". req req" ". seg seg" ". step ord";row-gap:10px;column-gap:10px;padding:14px 14px 14px 16px;}
+  #bdd-cc .rs-row>.rs-seg3{height:44px;}
+  #bdd-cc .rs-step{width:100%;height:44px;}
+  #bdd-cc .rs-step input[type=number]{flex:1;width:auto;min-width:0;}
+  #bdd-cc .rs-order{height:44px;}
+  #bdd-cc .rs-row>.rs-check{grid-area:chk;align-self:start;margin-top:1px;}
+  #bdd-cc .rs-main{grid-area:main;}
+  #bdd-cc .rs-reqcell{grid-area:req;}
+  #bdd-cc .rs-row>.rs-seg3{grid-area:seg;}
+  #bdd-cc .rs-step{grid-area:step;}
+  #bdd-cc .rs-order{grid-area:ord;justify-self:stretch;}
+  #bdd-cc .rs-meta{white-space:normal;}
+}
+@media(max-width:520px){
+  #bdd-cc .rs-kpi{min-height:112px;padding:14px;}
+  #bdd-cc .rs-kpi-s{display:none;}
+  #bdd-cc .rs-heat-row{grid-template-columns:1fr;gap:4px;}
+  #bdd-cc .rs-heat-cat{justify-content:flex-start;padding-left:0;}
+  #bdd-cc .rs-toolbar .rs-seg{width:100%;}
+  #bdd-cc .rs-bulk{top:8px;}
+  #bdd-cc .rs-bulk-n{width:100%;}
+}
+
+/* Location bar — top of page, switches the whole Command Center */
+#bdd-cc .cc-locbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 12px 10px 16px;background:#12151a;border:1px solid #23272e;border-left:3px solid var(--acc);}
+#bdd-cc .cc-locbar-title{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#8b93a1;}
+#bdd-cc .cc-locbar-title b{color:var(--acc);}
+
+/* Toast */
+#bdd-cc-toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:#12151a;border:1px solid #23272e;color:#F5F7FA;padding:12px 20px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:all .25s;z-index:9999;}
+#bdd-cc-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+#bdd-cc-toast{display:flex;align-items:center;gap:14px;}
+#bdd-cc-toast.has-action{pointer-events:auto;}
+#bdd-cc-toast .bdd-cc-toast-btn{all:unset;cursor:pointer;padding:4px 8px;border-radius:6px;font-size:13px;font-weight:800;color:var(--acc);}
+#bdd-cc-toast .bdd-cc-toast-btn:hover{background:rgba(var(--acc-rgb),.12);}
+
+@media(max-width:860px){
+  #bdd-cc .cc-hero-row{grid-template-columns:1fr;}
+  #bdd-cc .cc-modules{grid-template-columns:1fr;}
+}
+@media(max-width:520px){
+  #bdd-cc .bdd-cc-row{flex-direction:column;align-items:flex-start;}
+  #bdd-cc .bdd-cc-row-actions{width:100%;justify-content:flex-end;}
+}
+</style>
+
+<div class="cc-shell">
+
+  <!-- ── Location bar: Springfield (default) / Riverside — switches the whole page ── -->
+  <div class="cc-locbar bdd-cc-facet-sm">
+    <div class="cc-locbar-title">Command Center &middot; <b id="bdd-cc-locname">Springfield, IL</b></div>
+    <div class="rs-loc" role="group" aria-label="Location">
+      <button type="button" data-invloc="Springfield" onclick="BDDCC.setInvLoc('Springfield')">Springfield, IL <span>SPR</span></button>
+      <button type="button" data-invloc="Riverside" onclick="BDDCC.setInvLoc('Riverside')">Riverside, CA <span>RIV</span></button>
+    </div>
+  </div>
+
+  <!-- ── RESTOCK BOARD: everything Out or Almost Out, front and center ── -->
+  <section class="cc-restock bdd-cc-facet" aria-label="Restock board">
+    <div class="rs-head">
+      <div class="rs-title">Restock Board</div>
+      <div class="rs-sub">Tap a status to update &middot; select rows to request in bulk &middot; press <kbd>/</kbd> to search</div>
+    </div>
+    <div id="bdd-cc-restock"><div class="bdd-cc-empty">Loading inventory&hellip;<span class="rs-stuck">Still loading? Your browser may be holding an old copy &mdash; hard-refresh with &#8984;&#8679;R (Ctrl+Shift+R on Windows).</span></div></div>
+  </section>
+
+  <!-- ── Hero: this week's Payout Calculator numbers + quick counts ── -->
+  <div class="cc-hero-row">
+    <div class="cc-hero bdd-cc-facet">
+      <div class="cc-hero-label">Net Profit — This Week &middot; <span id="bdd-cc-hero-loc">SPR</span></div>
+      <div class="cc-hero-val" id="bdd-cc-stat-profit">—</div>
+      <div class="cc-hero-sub" id="bdd-cc-hero-sub">Pulled from the Payout Calculator (read-only)</div>
+      <a class="cc-hero-link" href="/payout-calculator/">Open Payout Calculator →</a>
+    </div>
+    <div class="cc-stat-strip">
+      <div class="cc-stat-card">
+        <div class="cc-stat-label">Jobs This Week</div>
+        <div class="cc-stat-val" id="bdd-cc-stat-jobs">—</div>
+      </div>
+      <div class="cc-stat-card">
+        <div class="cc-stat-label">Open Supply Requests</div>
+        <div class="cc-stat-val" id="bdd-cc-stat-supply">—</div>
+      </div>
+      <div class="cc-stat-card">
+        <div class="cc-stat-label">Open To-Dos</div>
+        <div class="cc-stat-val" id="bdd-cc-stat-todo">—</div>
+      </div>
+      <div class="cc-stat-card warn">
+        <div class="cc-stat-label">Low Stock</div>
+        <div class="cc-stat-val" id="bdd-cc-stat-lowstock">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Supply Orders + To-Dos, side by side ─────────────────────── -->
+  <div class="cc-modules">
+
+    <div class="cc-module">
+      <h2>Supply Orders</h2>
+      <div class="cc-panel">
+        <form id="bdd-cc-supply-form">
+          <div class="cc-two-col">
+            <div class="cc-field" hidden>
+              <label>Location</label>
+              <select id="bdd-cc-supply-loc">
+                <option value="Springfield">Springfield</option>
+                <option value="Riverside">Riverside</option>
+              </select>
+            </div>
+            <div class="cc-field">
+              <label>Requested By</label>
+              <select id="bdd-cc-supply-by"></select>
+            </div>
+          </div>
+          <div class="cc-field">
+            <label>Item</label>
+            <select id="bdd-cc-item-select" onchange="BDDCC.onItemSelectChange(this)"></select>
+            <input type="text" id="bdd-cc-item-other" class="cc-item-other" placeholder="Type item name">
+          </div>
+          <div class="cc-field">
+            <label>Quantity</label>
+            <input type="number" id="bdd-cc-supply-qty" min="1" step="1" placeholder="1">
+          </div>
+          <div class="cc-field">
+            <label>Notes (optional)</label>
+            <input type="text" id="bdd-cc-supply-notes" placeholder="e.g. need before Saturday">
+          </div>
+          <button type="submit" class="cc-submit">Send Request</button>
+        </form>
+      </div>
+
+      <div class="cc-panel">
+        <div class="cc-filters">
+          <button type="button" class="bdd-cc-pill active" data-supply-status="all" onclick="BDDCC.setSupplyFilter('status','all')">All</button>
+          <button type="button" class="bdd-cc-pill" data-supply-status="Requested" onclick="BDDCC.setSupplyFilter('status','Requested')">Requested</button>
+          <button type="button" class="bdd-cc-pill" data-supply-status="Ordered" onclick="BDDCC.setSupplyFilter('status','Ordered')">Ordered</button>
+          <button type="button" class="bdd-cc-pill" data-supply-status="Received" onclick="BDDCC.setSupplyFilter('status','Received')">Received</button>
+        </div>
+        <div id="bdd-cc-supply-list"></div>
+      </div>
+    </div>
+
+    <div class="cc-module">
+      <h2>To-Dos</h2>
+      <div class="cc-panel">
+        <form id="bdd-cc-todo-form">
+          <div class="cc-field">
+            <label>Task</label>
+            <input type="text" id="bdd-cc-todo-task" placeholder="What needs to get done?">
+          </div>
+          <div class="cc-two-col">
+            <div class="cc-field">
+              <label>Group</label>
+              <select id="bdd-cc-todo-group">
+                <option value="Springfield">Springfield</option>
+                <option value="Riverside">Riverside</option>
+                <option value="Leadership">Leadership</option>
+              </select>
+            </div>
+            <div class="cc-field">
+              <label>Assignee</label>
+              <select id="bdd-cc-todo-assignee"></select>
+            </div>
+            <div class="cc-field">
+              <label>Due Date</label>
+              <input type="date" id="bdd-cc-todo-due">
+            </div>
+          </div>
+          <div class="cc-field">
+            <label>Notes (optional)</label>
+            <input type="text" id="bdd-cc-todo-notes" placeholder="Any extra detail">
+          </div>
+          <button type="submit" class="cc-submit">Add Task</button>
+        </form>
+      </div>
+
+      <div class="cc-panel">
+        <div class="cc-filters">
+          <button type="button" class="bdd-cc-pill active" data-todo-group="Springfield" onclick="BDDCC.setTodoFilter('Springfield')">Springfield</button>
+          <button type="button" class="bdd-cc-pill" data-todo-group="Riverside" onclick="BDDCC.setTodoFilter('Riverside')">Riverside</button>
+          <button type="button" class="bdd-cc-pill" data-todo-group="Leadership" onclick="BDDCC.setTodoFilter('Leadership')">Leadership</button>
+        </div>
+        <div id="bdd-cc-todo-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Inventory (full width) ───────────────────────────────────── -->
+  <div class="cc-module-full">
+    <h2><span>Inventory &middot; <span id="bdd-cc-inv-loc-tag">SPR</span></span><span class="rs-loc rs-loc-sm" role="group" aria-label="Location"><button type="button" data-invloc="Springfield" onclick="BDDCC.setInvLoc('Springfield')">SPR</button><button type="button" data-invloc="Riverside" onclick="BDDCC.setInvLoc('Riverside')">RIV</button></span></h2>
+    <div class="cc-panel">
+      <form id="bdd-cc-inv-form" class="cc-inv-form">
+        <div class="cc-field">
+          <label>Item</label>
+          <input type="text" id="bdd-cc-inv-name" placeholder="Item name">
+        </div>
+        <div class="cc-field">
+          <label>Location</label>
+          <select id="bdd-cc-inv-loc">
+            <option value="Springfield">Springfield (SPR)</option>
+            <option value="Riverside">Riverside (RIV)</option>
+            <option value="both">Both locations</option>
+          </select>
+        </div>
+        <div class="cc-field">
+          <label>Category</label>
+          <select id="bdd-cc-inv-cat"></select>
+        </div>
+        <div class="cc-field">
+          <label>Qty</label>
+          <input type="number" id="bdd-cc-inv-qty-new" min="0" step="1" placeholder="0">
+        </div>
+        <div class="cc-field">
+          <label>Status</label>
+          <select id="bdd-cc-inv-status-new"></select>
+        </div>
+        <div class="cc-field">
+          <label>Notes (optional)</label>
+          <input type="text" id="bdd-cc-inv-notes" placeholder="e.g. 1/2 gallon">
+        </div>
+        <button type="submit" class="cc-submit">Add Item</button>
+      </form>
+    </div>
+
+    <div class="cc-panel">
+      <div class="cc-filters">
+        <button type="button" class="bdd-cc-pill active" data-inv-cat="all" onclick="BDDCC.setInventoryFilter('all')">All</button>
+        <button type="button" class="bdd-cc-pill" data-inv-cat="Blue Trunk" onclick="BDDCC.setInventoryFilter('Blue Trunk')">Blue Trunk</button>
+        <button type="button" class="bdd-cc-pill" data-inv-cat="Tool Bag" onclick="BDDCC.setInventoryFilter('Tool Bag')">Tool Bag</button>
+        <button type="button" class="bdd-cc-pill" data-inv-cat="Solutions" onclick="BDDCC.setInventoryFilter('Solutions')">Solutions</button>
+        <button type="button" class="bdd-cc-pill" data-inv-cat="Machinery" onclick="BDDCC.setInventoryFilter('Machinery')">Machinery</button>
+        <button type="button" class="bdd-cc-pill" data-inv-cat="Microfiber Materials" onclick="BDDCC.setInventoryFilter('Microfiber Materials')">Microfiber</button>
+      </div>
+      <div id="bdd-cc-inv-list"></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="bdd-cc-toast"></div>
+</div>
+
+<script src="https://example.com/bdd-dashboard.js?v=9"></script>

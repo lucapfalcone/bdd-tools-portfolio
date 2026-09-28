@@ -1,0 +1,856 @@
+[
+    {
+        "id": "riv-inv001",
+        "name": "Interior Brushes",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv002",
+        "name": "Orange Q Tips",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv003",
+        "name": "Carpet Liner",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv004",
+        "name": "Quick Connects",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv005",
+        "name": "Steering Wheel Covers",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "Extra",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv006",
+        "name": "Tire Shine Pads",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv007",
+        "name": "Tire Brushes",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv008",
+        "name": "Thread Tape",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv009",
+        "name": "Dog Hair Scraper",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv010",
+        "name": "Drill Brush Heads",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv011",
+        "name": "Drills + Batteries",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv012",
+        "name": "Tiny Stiff Brushes",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv013",
+        "name": "Exterior Brushes",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "Extra",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv014",
+        "name": "Extension Cords",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv015",
+        "name": "Air Compressor Hose",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv016",
+        "name": "Pressure Washer Gun",
+        "category": "Blue Trunk",
+        "qty": 0,
+        "status": "Out",
+        "notes": "Count unconfirmed",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv017",
+        "name": "Spray Bottles w/ Labels",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv018",
+        "name": "VRP",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv019",
+        "name": "Iron Remover",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv020",
+        "name": "Leather Detailer",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv021",
+        "name": "Chrome Wheel Cleaner",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv022",
+        "name": "Mini Trees",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv023",
+        "name": "Tire Shine",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv024",
+        "name": "Bug Remover",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv025",
+        "name": "Pre Wash",
+        "category": "Tool Bag",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv026",
+        "name": "Carpet Bomber",
+        "category": "Solutions",
+        "qty": 0,
+        "status": "Out",
+        "notes": "1/2 Gallon",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv027",
+        "name": "Bead Maker",
+        "category": "Solutions",
+        "qty": 0,
+        "status": "Out",
+        "notes": "3/4 Gallon",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv028",
+        "name": "Interior Cleaner",
+        "category": "Solutions",
+        "qty": 0,
+        "status": "Out",
+        "notes": "1/4 Gallon",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv029",
+        "name": "Brake Buster",
+        "category": "Solutions",
+        "qty": 0,
+        "status": "Out",
+        "notes": "1/2 Gallon",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv030",
+        "name": "Enzyme Spot & Stain",
+        "category": "Solutions",
+        "qty": 0,
+        "status": "Out",
+        "notes": "1/4 Gallon",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv031",
+        "name": "Mcguires Wash",
+        "category": "Solutions",
+        "qty": 0,
+        "status": "Out",
+        "notes": "3/4 Gallon",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv032",
+        "name": "Glass Cleaner",
+        "category": "Solutions",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv033",
+        "name": "Steamer",
+        "category": "Machinery",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv034",
+        "name": "Pressure Foam Cannons",
+        "category": "Machinery",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv035",
+        "name": "Handheld Foam Cannon",
+        "category": "Machinery",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv036",
+        "name": "Shop Vac",
+        "category": "Machinery",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv037",
+        "name": "Pressure Washer",
+        "category": "Machinery",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv038",
+        "name": "Buckets",
+        "category": "Machinery",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv039",
+        "name": "Tire Pressure Checker",
+        "category": "Machinery",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv040",
+        "name": "Broom Scrubber",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv041",
+        "name": "Broom Pads",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv042",
+        "name": "VRP Pads",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv043",
+        "name": "Interior Cloths (Light Grey, Unused)",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv044",
+        "name": "Small Paint Drying Rag",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv045",
+        "name": "Large Paint Drying Rag",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "Need 2 more",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv046",
+        "name": "Large Tire Drying Rag",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv047",
+        "name": "Medium Paint Drying Rag",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv048",
+        "name": "Drying Mitts",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "Wash and check",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv049",
+        "name": "Colorful Seat Rags",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "Want 30 total",
+        "location": "Riverside"
+    },
+    {
+        "id": "riv-inv050",
+        "name": "Nicer Interior Rags",
+        "category": "Microfiber Materials",
+        "qty": 0,
+        "status": "Out",
+        "notes": "Want 40 total",
+        "location": "Riverside"
+    },
+    {
+        "id": "inv001",
+        "name": "Interior Brushes",
+        "category": "Blue Trunk",
+        "qty": 5,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv002",
+        "name": "Orange Q Tips",
+        "category": "Blue Trunk",
+        "qty": 15,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv003",
+        "name": "Carpet Liner",
+        "category": "Blue Trunk",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv004",
+        "name": "Quick Connects",
+        "category": "Blue Trunk",
+        "qty": 5,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv005",
+        "name": "Steering Wheel Covers",
+        "category": "Blue Trunk",
+        "qty": 10,
+        "status": "Good",
+        "notes": "Extra"
+    },
+    {
+        "id": "inv006",
+        "name": "Tire Shine Pads",
+        "category": "Blue Trunk",
+        "qty": 8,
+        "status": "Almost Out",
+        "notes": "",
+        "updatedAt": "2026-09-11T05:27:12.730Z"
+    },
+    {
+        "id": "inv007",
+        "name": "Tire Brushes",
+        "category": "Blue Trunk",
+        "qty": 2,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv008",
+        "name": "Thread Tape",
+        "category": "Blue Trunk",
+        "qty": 2,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv009",
+        "name": "Dog Hair Scraper",
+        "category": "Blue Trunk",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv010",
+        "name": "Drill Brush Heads",
+        "category": "Blue Trunk",
+        "qty": 7,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv011",
+        "name": "Drills + Batteries",
+        "category": "Blue Trunk",
+        "qty": 2,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv012",
+        "name": "Tiny Stiff Brushes",
+        "category": "Blue Trunk",
+        "qty": 3,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv013",
+        "name": "Exterior Brushes",
+        "category": "Blue Trunk",
+        "qty": 5,
+        "status": "Good",
+        "notes": "Extra"
+    },
+    {
+        "id": "inv014",
+        "name": "Extension Cords",
+        "category": "Blue Trunk",
+        "qty": 3,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv015",
+        "name": "Air Compressor Hose",
+        "category": "Blue Trunk",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv016",
+        "name": "Pressure Washer Gun",
+        "category": "Blue Trunk",
+        "qty": 1,
+        "status": "Good",
+        "notes": "Count unconfirmed"
+    },
+    {
+        "id": "inv017",
+        "name": "Spray Bottles w/ Labels",
+        "category": "Tool Bag",
+        "qty": 8,
+        "status": "Out",
+        "notes": ""
+    },
+    {
+        "id": "inv018",
+        "name": "VRP",
+        "category": "Tool Bag",
+        "qty": 2,
+        "status": "Almost Out",
+        "notes": ""
+    },
+    {
+        "id": "inv019",
+        "name": "Iron Remover",
+        "category": "Tool Bag",
+        "qty": 1,
+        "status": "Almost Out",
+        "notes": ""
+    },
+    {
+        "id": "inv020",
+        "name": "Leather Detailer",
+        "category": "Tool Bag",
+        "qty": 2,
+        "status": "Almost Out",
+        "notes": ""
+    },
+    {
+        "id": "inv021",
+        "name": "Chrome Wheel Cleaner",
+        "category": "Tool Bag",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv022",
+        "name": "Mini Trees",
+        "category": "Tool Bag",
+        "qty": 10,
+        "status": "Out",
+        "notes": ""
+    },
+    {
+        "id": "inv023",
+        "name": "Tire Shine",
+        "category": "Tool Bag",
+        "qty": 1,
+        "status": "Almost Out",
+        "notes": ""
+    },
+    {
+        "id": "inv024",
+        "name": "Bug Remover",
+        "category": "Tool Bag",
+        "qty": 1,
+        "status": "Almost Out",
+        "notes": ""
+    },
+    {
+        "id": "inv025",
+        "name": "Pre Wash",
+        "category": "Tool Bag",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv026",
+        "name": "Carpet Bomber",
+        "category": "Solutions",
+        "qty": 1,
+        "status": "Almost Out",
+        "notes": "1/2 Gallon"
+    },
+    {
+        "id": "inv027",
+        "name": "Bead Maker",
+        "category": "Solutions",
+        "qty": 1,
+        "status": "Good",
+        "notes": "3/4 Gallon"
+    },
+    {
+        "id": "inv028",
+        "name": "Interior Cleaner",
+        "category": "Solutions",
+        "qty": 2,
+        "status": "Out",
+        "notes": "1/4 Gallon"
+    },
+    {
+        "id": "inv029",
+        "name": "Brake Buster",
+        "category": "Solutions",
+        "qty": 1,
+        "status": "Almost Out",
+        "notes": "1/2 Gallon"
+    },
+    {
+        "id": "inv030",
+        "name": "Enzyme Spot & Stain",
+        "category": "Solutions",
+        "qty": 1,
+        "status": "Out",
+        "notes": "1/4 Gallon",
+        "updatedAt": "2026-09-11T05:27:25.855Z"
+    },
+    {
+        "id": "inv031",
+        "name": "Mcguires Wash",
+        "category": "Solutions",
+        "qty": 1,
+        "status": "Good",
+        "notes": "3/4 Gallon"
+    },
+    {
+        "id": "inv032",
+        "name": "Glass Cleaner",
+        "category": "Solutions",
+        "qty": 1,
+        "status": "Out",
+        "notes": ""
+    },
+    {
+        "id": "inv033",
+        "name": "Steamer",
+        "category": "Machinery",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv034",
+        "name": "Pressure Foam Cannons",
+        "category": "Machinery",
+        "qty": 2,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv035",
+        "name": "Handheld Foam Cannon",
+        "category": "Machinery",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv036",
+        "name": "Shop Vac",
+        "category": "Machinery",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv037",
+        "name": "Pressure Washer",
+        "category": "Machinery",
+        "qty": 1,
+        "status": "Almost Out",
+        "notes": "",
+        "updatedAt": "2026-09-11T05:27:21.134Z"
+    },
+    {
+        "id": "inv038",
+        "name": "Buckets",
+        "category": "Machinery",
+        "qty": 5,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv039",
+        "name": "Tire Pressure Checker",
+        "category": "Machinery",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv040",
+        "name": "Broom Scrubber",
+        "category": "Microfiber Materials",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv041",
+        "name": "Broom Pads",
+        "category": "Microfiber Materials",
+        "qty": 2,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv042",
+        "name": "VRP Pads",
+        "category": "Microfiber Materials",
+        "qty": 6,
+        "status": "Almost Out",
+        "notes": "",
+        "updatedAt": "2026-09-11T05:27:22.401Z"
+    },
+    {
+        "id": "inv043",
+        "name": "Interior Cloths (Light Grey, Unused)",
+        "category": "Microfiber Materials",
+        "qty": 43,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv044",
+        "name": "Small Paint Drying Rag",
+        "category": "Microfiber Materials",
+        "qty": 1,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv045",
+        "name": "Large Paint Drying Rag",
+        "category": "Microfiber Materials",
+        "qty": 3,
+        "status": "Almost Out",
+        "notes": "Need 2 more"
+    },
+    {
+        "id": "inv046",
+        "name": "Large Tire Drying Rag",
+        "category": "Microfiber Materials",
+        "qty": 2,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv047",
+        "name": "Medium Paint Drying Rag",
+        "category": "Microfiber Materials",
+        "qty": 3,
+        "status": "Good",
+        "notes": ""
+    },
+    {
+        "id": "inv048",
+        "name": "Drying Mitts",
+        "category": "Microfiber Materials",
+        "qty": 2,
+        "status": "Almost Out",
+        "notes": "Wash and check"
+    },
+    {
+        "id": "inv049",
+        "name": "Colorful Seat Rags",
+        "category": "Microfiber Materials",
+        "qty": 15,
+        "status": "Almost Out",
+        "notes": "Want 30 total"
+    },
+    {
+        "id": "inv050",
+        "name": "Nicer Interior Rags",
+        "category": "Microfiber Materials",
+        "qty": 21,
+        "status": "Almost Out",
+        "notes": "Want 40 total"
+    }
+]

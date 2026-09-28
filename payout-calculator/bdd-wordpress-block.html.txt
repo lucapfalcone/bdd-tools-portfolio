@@ -1,0 +1,496 @@
+<!-- BDD Payout Calculator + Job Tracker (v8 · Springfield / Riverside / Both) — paste into a WordPress Custom HTML block -->
+<div id="bdd-calc">
+<style>
+#bdd-calc *{box-sizing:border-box;margin:0;padding:0;}
+#bdd-calc{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:transparent;color:#F5F7FA;}
+/* Location theme — Springfield = Diamond Ice (default), Riverside = Forge Copper, Both = Steel (brand board).
+   Every accent reads these, so the location switch recolors the whole calculator. */
+#bdd-calc{--acc:#7FD8E8;--acc-rgb:127,216,232;--acc-2:#9de4ef;--acc-hover:#63c2d6;}
+#bdd-calc.loc-riv{--acc:#E8B27F;--acc-rgb:232,178,127;--acc-2:#f2c9a0;--acc-hover:#d99a5e;}
+#bdd-calc.loc-both{--acc:#9CA3AC;--acc-rgb:156,163,172;--acc-2:#c3c8ce;--acc-hover:#868d96;}
+/* Location bar + switch */
+#bdd-calc .bdd-locbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:clamp(14px,2.5vw,22px);padding:10px 12px 10px 16px;background:#12151a;border:1px solid #23272e;border-left:3px solid var(--acc);}
+#bdd-calc .bdd-locbar-title{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:#8b93a1;}
+#bdd-calc .bdd-locbar-title b{color:var(--acc);}
+#bdd-calc .bdd-locswitch{display:inline-flex;gap:3px;padding:4px;background:#0d0f13;border:1px solid #23272e;border-radius:12px;}
+#bdd-calc .bdd-locswitch button{background:transparent;border:0;color:#8b93a1;font-family:inherit;font-size:13px;font-weight:700;height:36px;padding:0 14px;border-radius:9px;cursor:pointer;transition:background .15s,color .15s;-webkit-appearance:none;}
+#bdd-calc .bdd-locswitch button:hover{color:#F5F7FA;}
+#bdd-calc .bdd-locswitch button.on[data-loc-view="Springfield"]{background:#7FD8E8;color:#0B0D10;}
+#bdd-calc .bdd-locswitch button.on[data-loc-view="Riverside"]{background:#E8B27F;color:#0B0D10;}
+#bdd-calc .bdd-locswitch button.on[data-loc-view="both"]{background:#9CA3AC;color:#0B0D10;}
+/* A job's own location keeps its color in any view */
+#bdd-calc .bdd-loc-toggle.loc-spr.active{background:#7FD8E8!important;border-color:#7FD8E8!important;}
+#bdd-calc .bdd-loc-toggle.loc-riv.active{background:#E8B27F!important;border-color:#E8B27F!important;}
+#bdd-calc .bdd-chip.loc{font-weight:800;letter-spacing:.6px;color:#0B0D10;}
+#bdd-calc .bdd-chip.loc-spr{background:#7FD8E8;}
+#bdd-calc .bdd-chip.loc-riv{background:#E8B27F;}
+#bdd-calc .bdd-shell{max-width:1240px;margin:0 auto;padding:clamp(16px,4vw,40px);}
+
+/* Facet cut — the signature shape. Used on every static display panel. */
+#bdd-calc .bdd-facet{clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,18px 100%,0 calc(100% - 18px));}
+#bdd-calc .bdd-facet-sm{clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));}
+
+/* Section labels */
+#bdd-calc h2{font-family:'Space Grotesk',-apple-system,sans-serif;font-size:11px;font-weight:600;color:#F5F7FA;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+#bdd-calc h2 svg{width:13px;height:13px;color:var(--acc);flex-shrink:0;}
+
+/* ── HERO: Net Profit centerpiece + satellite stats ───────────── */
+#bdd-calc .bdd-hero-row{display:grid;grid-template-columns:minmax(220px,1.1fr) minmax(0,2fr);gap:clamp(10px,2vw,16px);margin-bottom:clamp(10px,2vw,16px);}
+#bdd-calc .bdd-hero{background:linear-gradient(135deg,var(--acc) 0%,var(--acc-2) 100%);color:#0B0D10;padding:clamp(20px,3vw,28px);position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;min-height:150px;}
+#bdd-calc .bdd-hero-icon{position:absolute;right:-18px;bottom:-22px;width:110px;height:110px;opacity:.16;color:#0B0D10;}
+#bdd-calc .bdd-hero-label{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:rgba(11,13,16,.62);margin-bottom:6px;position:relative;z-index:1;}
+#bdd-calc .bdd-hero-val{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,4vw,42px);font-weight:700;letter-spacing:-1px;line-height:1;position:relative;z-index:1;}
+#bdd-calc .bdd-hero-sub{font-size:11px;color:rgba(11,13,16,.6);margin-top:8px;position:relative;z-index:1;}
+#bdd-calc .bdd-hero-link{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:12px;font-weight:700;color:#0B0D10;text-decoration:none;background:rgba(11,13,16,.1);padding:8px 14px;border-radius:999px;width:fit-content;position:relative;z-index:1;transition:background .2s;}
+#bdd-calc .bdd-hero-link:hover{background:rgba(11,13,16,.18);}
+
+#bdd-calc .bdd-stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:clamp(8px,1.5vw,12px);}
+#bdd-calc .bdd-sum-card{background:#12151a;border:1px solid #23272e;padding:14px 14px 12px;display:flex;flex-direction:column;justify-content:center;}
+#bdd-calc .bdd-sum-label{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
+#bdd-calc .bdd-sum-val{font-family:'Space Grotesk',sans-serif;font-size:clamp(17px,2vw,20px);font-weight:700;color:#F5F7FA;letter-spacing:-.4px;line-height:1;}
+#bdd-calc .bdd-sum-sub{font-size:10px;color:#454b54;margin-top:6px;}
+#bdd-calc .bdd-sum-card.tax .bdd-sum-val{color:#e2574a;}
+#bdd-calc .bdd-sum-card.tips-card{grid-column:1/-1;flex-direction:row;align-items:center;justify-content:space-between;}
+#bdd-calc .bdd-sum-card.tips-card .bdd-sum-label{margin-bottom:0;}
+#bdd-calc .bdd-sum-card.tips-card .bdd-sum-val{color:#3ecf8e;font-size:15px;}
+#bdd-calc .bdd-summary-tips{margin-top:clamp(8px,1.5vw,12px);}
+
+/* Filters */
+#bdd-calc .bdd-filters{display:flex;gap:6px;margin:18px 0 14px;flex-wrap:wrap;}
+#bdd-calc .bdd-pill{background:transparent;border:1px solid rgba(255,255,255,0.16);color:rgba(245,247,250,0.5);font-size:12px;font-weight:500;padding:6px 16px;border-radius:20px;cursor:pointer;transition:all .2s;outline:none;-webkit-appearance:none;}
+#bdd-calc .bdd-pill:hover{border-color:rgba(var(--acc-rgb),0.45);color:rgba(245,247,250,0.8);}
+#bdd-calc .bdd-pill.active{background:var(--acc);border-color:var(--acc);color:#0B0D10;}
+
+/* Chart */
+#bdd-calc .bdd-chart-wrap{background:#12151a;border:1px solid #23272e;padding:18px 16px 14px;margin-top:14px;}
+#bdd-calc .bdd-chart-title{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;}
+#bdd-calc .bdd-chart{display:flex;align-items:flex-end;gap:clamp(3px,.6vw,6px);height:70px;}
+#bdd-calc .bdd-bar-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-width:0;max-width:52px;}
+#bdd-calc .bdd-bar{width:100%;background:var(--acc);opacity:.4;transition:height .5s ease,opacity .2s;clip-path:polygon(0 6px,50% 0,100% 6px,100% 100%,0 100%);}
+#bdd-calc .bdd-bar:hover{opacity:.8;}
+#bdd-calc .bdd-bar-lbl{font-size:9px;color:#5b6270;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center;}
+#bdd-calc .bdd-chart-empty{height:70px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#454b54;}
+
+/* ── Payout Tracker: owners / employees / managers ledger ──────── */
+#bdd-calc .bdd-pt-wrap{background:#12151a;border:1px solid #23272e;padding:16px 16px 14px;margin-top:14px;}
+#bdd-calc .bdd-pt-title{font-size:10px;font-weight:600;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+#bdd-calc .bdd-pt-grid{display:flex;flex-direction:column;gap:8px;}
+#bdd-calc .bdd-pt-row{display:grid;gap:8px;}
+#bdd-calc .bdd-pt-row.pt-owners{grid-template-columns:repeat(2,1fr);}
+#bdd-calc .bdd-pt-row.pt-emps{grid-template-columns:repeat(auto-fit,minmax(92px,1fr));}
+#bdd-calc .bdd-pt-row.pt-mgrs{grid-template-columns:repeat(2,1fr);}
+#bdd-calc .bdd-pt-card{background:#0d0f13;border:1px solid #1e2229;border-top:2px solid #3a3f47;padding:12px 8px 10px;text-align:center;}
+#bdd-calc .bdd-pt-name{font-size:10px;font-weight:600;color:#5b6270;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;}
+#bdd-calc .bdd-pt-amt{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#d7dade;letter-spacing:-0.3px;font-variant-numeric:tabular-nums;}
+/* Owners (Jordan, Avery) — bigger + accent border */
+#bdd-calc .bdd-pt-card.pt-owner{padding:16px 10px 14px;border-top-color:var(--acc);}
+#bdd-calc .bdd-pt-card.pt-owner .bdd-pt-amt{font-size:19px;color:#F5F7FA;}
+/* Regional Managers (Harlan, Sawyer) — indigo accent */
+#bdd-calc .bdd-pt-card.pt-mgr{border-top-color:#9d8bff;}
+@media(max-width:420px){
+  #bdd-calc .bdd-pt-row.pt-emps{grid-template-columns:repeat(2,1fr);}
+  #bdd-calc .bdd-pt-row.pt-emps .bdd-pt-card:last-child:nth-child(odd){grid-column:1/-1;}
+}
+
+/* ── Ticket panel (New Job) ─────────────────────────────────────── */
+#bdd-calc .bdd-ticket{background:#12151a;border:1px solid #23272e;}
+#bdd-calc .bdd-ticket-inner{padding:22px;}
+#bdd-calc .bdd-perf{position:relative;height:0;margin:20px -22px;border-top:1.5px dashed #2a2f38;}
+#bdd-calc .bdd-perf::before,#bdd-calc .bdd-perf::after{content:"";position:absolute;top:-9px;width:18px;height:18px;border-radius:50%;background:#0B0D10;}
+#bdd-calc .bdd-perf::before{left:-9px;}
+#bdd-calc .bdd-perf::after{right:-9px;}
+
+#bdd-calc .bdd-field{margin-bottom:10px;}
+#bdd-calc .bdd-field label{display:block;font-size:11px;font-weight:500;color:#8b93a1;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:5px;}
+#bdd-calc input[type=text],#bdd-calc input[type=number],#bdd-calc input[type=date]{width:100%;padding:11px 14px;font-size:15px;border:1px solid #23272e;border-radius:10px;background:#0d0f13;color:#F5F7FA;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;font-variant-numeric:tabular-nums;}
+#bdd-calc input:focus{border-color:var(--acc);}
+#bdd-calc input::placeholder{color:#3a3f47;}
+#bdd-calc input[type=date]{color-scheme:dark;}
+#bdd-calc .bdd-two-col{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;}
+#bdd-calc .bdd-divider{height:1px;background:rgba(255,255,255,0.07);margin:26px 0;}
+
+#bdd-calc .bdd-toggle-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+#bdd-calc .bdd-owner-toggle{flex:1;min-width:64px;padding:12px 8px;background:#0d0f13!important;border:1.5px solid #23272e;border-radius:10px;color:#7a8290!important;font-size:13px;font-weight:500;cursor:pointer;text-align:center;transition:all .2s;outline:none;-webkit-appearance:none;pointer-events:auto!important;}
+#bdd-calc .bdd-owner-toggle.active{background:var(--acc)!important;border-color:var(--acc)!important;color:#0B0D10!important;}
+#bdd-calc .bdd-owner-toggle:hover:not(.active):not(.emp-disabled){border-color:var(--acc);color:#F5F7FA!important;}
+#bdd-calc .bdd-owner-toggle.emp-disabled{opacity:.3;cursor:not-allowed;}
+#bdd-calc .bdd-field>label{pointer-events:none!important;display:block!important;height:auto!important;position:static!important;}
+#bdd-calc .bdd-checkbox-row{display:flex!important;align-items:center;gap:8px;margin-bottom:14px;user-select:none;}
+#bdd-calc .bdd-checkbox-row input[type=checkbox]{width:16px;height:16px;accent-color:var(--acc);cursor:pointer;flex-shrink:0;}
+#bdd-calc .bdd-checkbox-row span,#bdd-calc .bdd-checkbox-row>label{font-size:13px!important;color:#8b93a1!important;text-transform:none!important;letter-spacing:normal!important;cursor:pointer;margin:0!important;display:inline!important;font-weight:400!important;}
+
+#bdd-calc .bdd-breakdown{background:#0d0f13;border:1px solid #23272e;padding:14px;margin-bottom:14px;}
+#bdd-calc .bdd-bkd-title{font-size:10px;font-weight:600;color:#5b6270;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
+#bdd-calc .bdd-type-badge{display:inline-block;background:var(--acc);color:#0B0D10;font-size:10px;font-weight:700;padding:3px 10px;margin-bottom:10px;letter-spacing:0.3px;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 100%,6px 100%);}
+#bdd-calc .bdd-type-badge.invalid{background:transparent;color:#e2574a;border:1px solid #3a1010;font-size:12px;padding:4px 0;font-weight:400;clip-path:none;}
+#bdd-calc .bdd-split-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1c2026;font-size:13px;}
+#bdd-calc .bdd-split-row:last-child{border-bottom:none;}
+#bdd-calc .bdd-split-name{color:#8b93a1;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+#bdd-calc .bdd-split-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+#bdd-calc .bdd-split-dot.on{background:var(--acc);}
+#bdd-calc .bdd-split-dot.off{background:#3a3f47;}
+#bdd-calc .bdd-split-dot.emp{background:#5b6270;}
+#bdd-calc .bdd-split-right{display:flex;align-items:center;gap:10px;}
+#bdd-calc .bdd-split-pct{font-size:11px;color:#454b54;min-width:28px;text-align:right;}
+#bdd-calc .bdd-split-amt{font-weight:600;color:#c7cbd1;min-width:56px;text-align:right;font-variant-numeric:tabular-nums;}
+#bdd-calc .bdd-split-row.biz .bdd-split-amt{color:#F5F7FA;}
+#bdd-calc .bdd-split-row.tax-line .bdd-split-name,#bdd-calc .bdd-split-row.tax-line .bdd-split-amt{color:#e2574a;}
+#bdd-calc .bdd-bkd-placeholder{color:#454b54;font-size:12px;text-align:center;padding:14px 0;}
+
+/* Tip cut — even split of the job's tip among everyone present */
+#bdd-calc .bdd-tip-cut{flex-basis:100%;width:-moz-fit-content;width:fit-content;margin-top:2px;font-size:10px;font-weight:600;color:#3ecf8e;background:#0a1f12;border:1px solid #1a4a28;border-radius:5px;padding:2px 6px;font-variant-numeric:tabular-nums;}
+#bdd-calc .bdd-payout-tip{margin-top:5px;font-size:10px;font-weight:600;color:#3ecf8e;background:#0a1f12;border:1px solid #1a4a28;border-radius:5px;padding:2px 5px;display:inline-block;font-variant-numeric:tabular-nums;}
+
+#bdd-calc .bdd-save-btn{width:100%;padding:14px;background:var(--acc);color:#0B0D10;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all .2s;letter-spacing:.5px;text-transform:uppercase;-webkit-appearance:none;clip-path:polygon(14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%,0 14px);}
+#bdd-calc .bdd-save-btn:hover{background:var(--acc-hover);}
+#bdd-calc .bdd-save-btn:disabled{opacity:.3;cursor:not-allowed;}
+
+#bdd-toast-bdd{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(8px);background:var(--acc);color:#0B0D10;font-size:13px;font-weight:600;padding:10px 22px;opacity:0;pointer-events:none;transition:all .25s;z-index:99999;white-space:nowrap;box-shadow:0 4px 20px rgba(0,0,0,.5);clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);}
+#bdd-toast-bdd.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+#bdd-calc .bdd-history-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
+#bdd-calc .bdd-history-hdr h2{margin-bottom:0;}
+#bdd-calc .bdd-hdr-right{display:flex;align-items:center;gap:10px;}
+#bdd-calc .bdd-sort-btn{background:transparent;border:1px solid rgba(255,255,255,.16);color:rgba(245,247,250,.55);font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;cursor:pointer;transition:all .2s;outline:none;-webkit-appearance:none;}
+#bdd-calc .bdd-sort-btn:hover{border-color:var(--acc);color:#F5F7FA;}
+#bdd-calc .bdd-danger-btn{background:none;border:none;color:#e2574a;font-size:12px;font-weight:500;cursor:pointer;padding:0;transition:opacity .2s;opacity:.7;}
+#bdd-calc .bdd-danger-btn:hover{opacity:1;}
+
+#bdd-calc .bdd-danger-panel{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+#bdd-calc .bdd-danger-panel.open{max-height:220px;}
+#bdd-calc .bdd-danger-inner{background:#1a0d0d;border:1px solid #3a1515;padding:16px;margin-bottom:12px;}
+#bdd-calc .bdd-danger-title{font-size:13px;font-weight:600;color:#e2574a;margin-bottom:6px;}
+#bdd-calc .bdd-danger-desc{font-size:12px;color:#9a5a5a;margin-bottom:12px;line-height:1.5;}
+#bdd-calc .bdd-danger-inner label{font-size:11px;color:#9a5a5a;text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px;}
+#bdd-calc .bdd-danger-input{border:1px solid #3a1515!important;background:#1a0808!important;color:#F5F7FA!important;margin-bottom:12px;}
+#bdd-calc .bdd-danger-input:focus{border-color:#e2574a!important;}
+#bdd-calc .bdd-danger-actions{display:flex;gap:8px;}
+#bdd-calc .bdd-danger-cancel{flex:1;padding:10px;background:transparent;border:1px solid #2a1515;color:#9a5a5a;font-size:13px;border-radius:8px;cursor:pointer;transition:all .2s;}
+#bdd-calc .bdd-danger-cancel:hover{border-color:#555;color:#ccc;}
+#bdd-calc .bdd-danger-confirm{flex:2;padding:10px;background:#e2574a;color:#fff;font-size:13px;font-weight:600;border:none;border-radius:8px;cursor:pointer;opacity:.3;pointer-events:none;transition:all .2s;}
+#bdd-calc .bdd-danger-confirm.ready{opacity:1;pointer-events:auto;}
+#bdd-calc .bdd-danger-confirm.ready:hover{background:#c94334;}
+
+#bdd-calc .bdd-timeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:12px;align-items:start;}
+#bdd-calc .bdd-job-card{background:#12151a;border:1px solid #23272e;border-left:3px solid var(--acc);overflow:hidden;}
+#bdd-calc .bdd-job-body{padding:16px 18px;}
+#bdd-calc .bdd-job-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+#bdd-calc .bdd-job-meta{flex:1;min-width:0;}
+#bdd-calc .bdd-job-date{font-size:10px;font-weight:600;color:#5b6270;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+#bdd-calc .bdd-job-name{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:500;color:#F5F7FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#bdd-calc .bdd-job-right{display:flex;align-items:center;gap:6px;flex-shrink:0;margin-left:12px;}
+#bdd-calc .bdd-job-price{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;color:#F5F7FA;letter-spacing:-0.5px;font-variant-numeric:tabular-nums;}
+#bdd-calc .bdd-job-btn{background:transparent;border:1px solid #23272e;color:#454b54;width:30px;height:30px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;font-size:15px;line-height:1;}
+#bdd-calc .bdd-job-btn:hover{border-color:var(--acc);color:var(--acc);}
+#bdd-calc .bdd-job-btn.del:hover{border-color:#e2574a;color:#e2574a;}
+#bdd-calc .bdd-job-btn.edit.active{background:var(--acc);border-color:var(--acc);color:#0B0D10;}
+#bdd-calc .bdd-job-chips{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap;}
+#bdd-calc .bdd-chip{font-size:11px;font-weight:500;padding:3px 9px;border-radius:6px;}
+#bdd-calc .bdd-chip.type{background:#1c2026;border:1px solid #262b32;color:#8b93a1;}
+#bdd-calc .bdd-chip.exp{background:#12151a;border:1px solid #23272e;color:#6b7280;}
+#bdd-calc .bdd-chip.prof{background:var(--acc);color:#0B0D10;}
+#bdd-calc .bdd-chip.tax{background:#1e0808;border:1px solid #3a1010;color:#e2574a;}
+#bdd-calc .bdd-chip.tips{background:#0a1f12;border:1px solid #1a4a28;color:#3ecf8e;}
+#bdd-calc .bdd-chip.ref{background:rgba(var(--acc-rgb),.08);border:1px solid rgba(var(--acc-rgb),.35);color:var(--acc);}
+#bdd-calc .bdd-chip.mgr{background:rgba(157,139,255,.1);border:1px solid rgba(157,139,255,.4);color:#b3a4ff;}
+#bdd-calc .bdd-payout-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;}
+#bdd-calc .bdd-payout-item{background:#0d0f13;border-radius:8px;padding:8px 10px;}
+#bdd-calc .bdd-payout-name{font-size:10px;color:#5b6270;margin-bottom:3px;font-weight:500;}
+#bdd-calc .bdd-payout-amt{font-size:13px;font-weight:600;color:#c7cbd1;font-variant-numeric:tabular-nums;}
+#bdd-calc .bdd-payout-item.biz .bdd-payout-amt{color:#F5F7FA;}
+
+#bdd-calc .bdd-edit-panel{max-height:0;overflow:hidden;transition:max-height 0.4s ease;}
+#bdd-calc .bdd-edit-panel.open{max-height:85vh;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;}
+#bdd-calc .bdd-edit-inner{border-top:1px solid #1c2026;padding:16px 18px;background:#0a0c0f;}
+#bdd-calc .bdd-edit-actions{display:flex;gap:8px;margin-top:4px;position:sticky;bottom:0;z-index:2;background:#0a0c0f;padding:10px 0 2px;}
+#bdd-calc .bdd-edit-cancel{flex:1;padding:11px;background:transparent;border:1px solid #23272e;color:#7a8290;font-size:14px;border-radius:10px;cursor:pointer;transition:all .2s;-webkit-appearance:none;}
+#bdd-calc .bdd-edit-cancel:hover{border-color:var(--acc);color:#F5F7FA;}
+#bdd-calc .bdd-edit-save{flex:2;padding:11px;background:var(--acc);color:#0B0D10;font-size:14px;font-weight:600;border:none;border-radius:10px;cursor:pointer;transition:opacity .2s;-webkit-appearance:none;}
+#bdd-calc .bdd-edit-save:hover{opacity:.85;}
+#bdd-calc .bdd-edit-save:disabled{opacity:.3;cursor:not-allowed;}
+
+#bdd-calc .bdd-empty{text-align:center;color:#454b54;font-size:14px;padding:40px 0;line-height:1.8;}
+
+#bdd-calc .bdd-flat-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+#bdd-calc .bdd-flat-input{flex:1;min-width:90px;padding:8px 10px;font-size:13px;border:1px solid rgba(var(--acc-rgb),.35);border-radius:8px;background:#0d0f13;color:#F5F7FA;outline:none;display:none;-webkit-appearance:none;appearance:none;}
+#bdd-calc .bdd-flat-input:focus{border-color:var(--acc);}
+#bdd-calc .bdd-emp-flat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px;margin-bottom:12px;}
+#bdd-calc .bdd-emp-flat-col{display:flex;flex-direction:column;gap:6px;}
+#bdd-calc .bdd-emp-flat-col .bdd-flat-input{min-width:0;}
+#bdd-calc .bdd-custom-split-wrap{background:rgba(var(--acc-rgb),.05);border:1px solid rgba(var(--acc-rgb),.3);padding:14px;margin-bottom:14px;}
+#bdd-calc .bdd-custom-pct-row{display:flex;gap:8px;flex-wrap:wrap;}
+#bdd-calc .bdd-custom-pct-item{flex:1;min-width:80px;display:flex;flex-direction:column;}
+#bdd-calc .bdd-custom-pct-item label{font-size:10px!important;color:var(--acc)!important;text-transform:uppercase!important;letter-spacing:0.5px!important;margin-bottom:5px!important;display:block!important;font-weight:600!important;}
+#bdd-calc .bdd-pct-input-wrap{position:relative;}
+#bdd-calc .bdd-pct-input-wrap input{padding-right:28px!important;}
+#bdd-calc .bdd-pct-input-wrap span{position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--acc);font-size:14px;pointer-events:none;}
+#bdd-calc .bdd-job-card.flat-rate{border-left-color:var(--acc);background:rgba(var(--acc-rgb),.03);}
+#bdd-calc .bdd-chip.flat-rate-chip{background:rgba(var(--acc-rgb),.1);border:1px solid rgba(var(--acc-rgb),.35);color:var(--acc);}
+#bdd-calc .bdd-type-badge.flat-rate-badge{background:rgba(var(--acc-rgb),.2);color:var(--acc);}
+#bdd-calc .bdd-job-card.not-paid{border-left-color:#e2574a!important;box-shadow:inset 3px 0 0 rgba(226,87,74,.0),0 0 16px rgba(226,87,74,.25);}
+#bdd-calc .bdd-job-card.paid-out{border-left-color:#3ecf8e!important;box-shadow:0 0 16px rgba(62,207,142,.18);}
+
+/* ── Layout: two-column above tablet, single fluid column below ─── */
+#bdd-calc .bdd-layout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);gap:clamp(14px,2.5vw,26px);align-items:start;}
+#bdd-calc .bdd-ticket{position:sticky;top:16px;}
+
+@media(max-width:880px){
+  #bdd-calc .bdd-layout{grid-template-columns:1fr;}
+  #bdd-calc .bdd-ticket{position:static;}
+  #bdd-calc .bdd-hero-row{grid-template-columns:1fr;}
+}
+@media(max-width:520px){
+  #bdd-calc .bdd-ticket-inner{padding:18px;}
+  #bdd-calc .bdd-perf{margin-inline:-18px;}
+}
+</style>
+
+<div class="bdd-shell">
+
+<!-- LOCATION: Springfield (default) / Riverside / Both (combined stats) -->
+<div class="bdd-locbar bdd-facet-sm">
+  <div class="bdd-locbar-title">Payout Calculator &middot; <b id="bdd-locbar-name">Springfield, IL</b></div>
+  <div class="bdd-locswitch" role="group" aria-label="Location">
+    <button type="button" data-loc-view="Springfield" onclick="bddSetLocView('Springfield')">Springfield, IL</button>
+    <button type="button" data-loc-view="Riverside" onclick="bddSetLocView('Riverside')">Riverside, CA</button>
+    <button type="button" data-loc-view="both" onclick="bddSetLocView('both')">Both</button>
+  </div>
+</div>
+
+<div class="bdd-layout">
+<div>
+<!-- DASHBOARD -->
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5.6 3.2H18.4L21.8 8.8 12 21 2.2 8.8Z"></path><path d="M2.2 8.8H21.8"></path></svg>Dashboard</h2>
+
+<div class="bdd-hero-row">
+  <div class="bdd-hero bdd-facet">
+    <svg class="bdd-hero-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M5.6 3.2H18.4L21.8 8.8 12 21 2.2 8.8Z"></path></svg>
+    <div class="bdd-hero-label">Net Profit</div>
+    <div class="bdd-hero-val" id="bdd-s-prof">$0.00</div>
+    <div class="bdd-hero-sub">business cut · <span id="bdd-s-jobs">0 jobs</span><span id="bdd-s-ref-note"></span> · <span id="bdd-s-loc">Springfield</span></div>
+    <a class="bdd-hero-link" href="/command-center/" rel="noopener">Open Command Center →</a>
+  </div>
+  <div class="bdd-stat-strip">
+    <div class="bdd-sum-card bdd-facet-sm">
+      <div class="bdd-sum-label">Revenue</div>
+      <div class="bdd-sum-val" id="bdd-s-rev">$0.00</div>
+    </div>
+    <div class="bdd-sum-card bdd-facet-sm">
+      <div class="bdd-sum-label">Expenses</div>
+      <div class="bdd-sum-val" id="bdd-s-exp">$0.00</div>
+      <div class="bdd-sum-sub">paid out</div>
+    </div>
+    <div class="bdd-sum-card tax bdd-facet-sm">
+      <div class="bdd-sum-label">Tax Collected</div>
+      <div class="bdd-sum-val" id="bdd-s-tax">$0.00</div>
+      <div class="bdd-sum-sub">8.75% on top</div>
+    </div>
+    <div class="bdd-summary-tips" style="grid-column:1/-1;">
+      <div class="bdd-sum-card tips-card bdd-facet-sm">
+        <div class="bdd-sum-label">Total Tips</div>
+        <div class="bdd-sum-val" id="bdd-s-tips">$0.00</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bdd-filters">
+  <button class="bdd-pill active" onclick="bddSetFilter('all',this)">All Time</button>
+  <button class="bdd-pill" onclick="bddSetFilter('week',this)">This Week</button>
+  <button class="bdd-pill" onclick="bddSetFilter('month',this)">This Month</button>
+  <button class="bdd-pill" onclick="bddSetFilter('year',this)">This Year</button>
+</div>
+
+<div class="bdd-chart-wrap bdd-facet-sm">
+  <div class="bdd-chart-title">Revenue per job</div>
+  <div class="bdd-chart" id="bdd-chart"><div class="bdd-chart-empty">No jobs yet</div></div>
+</div>
+
+<!-- PAYOUT TRACKER -->
+<div class="bdd-pt-wrap bdd-facet-sm">
+  <div class="bdd-pt-title">Payout Tracker</div>
+  <div class="bdd-pt-grid" id="bdd-payout-tracker">
+    <div class="bdd-pt-row pt-owners">
+      <div class="bdd-pt-card pt-owner"><div class="bdd-pt-name">Jordan</div><div class="bdd-pt-amt">$0.00</div></div>
+      <div class="bdd-pt-card pt-owner"><div class="bdd-pt-name">Avery</div><div class="bdd-pt-amt">$0.00</div></div>
+    </div>
+    <div class="bdd-pt-row pt-emps">
+      <div class="bdd-pt-card"><div class="bdd-pt-name">Devon</div><div class="bdd-pt-amt">$0.00</div></div>
+      <div class="bdd-pt-card"><div class="bdd-pt-name">Priya</div><div class="bdd-pt-amt">$0.00</div></div>
+      <div class="bdd-pt-card"><div class="bdd-pt-name">Marco</div><div class="bdd-pt-amt">$0.00</div></div>
+      <div class="bdd-pt-card"><div class="bdd-pt-name">Theo</div><div class="bdd-pt-amt">$0.00</div></div>
+    </div>
+    <div class="bdd-pt-row pt-mgrs">
+      <div class="bdd-pt-card pt-mgr"><div class="bdd-pt-name">Harlan</div><div class="bdd-pt-amt">$0.00</div></div>
+      <div class="bdd-pt-card pt-mgr"><div class="bdd-pt-name">Sawyer</div><div class="bdd-pt-amt">$0.00</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- NEW JOB TICKET -->
+<div class="bdd-ticket bdd-facet">
+<div class="bdd-ticket-inner">
+<h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5.6 3.2H18.4L21.8 8.8 12 21 2.2 8.8Z"></path><path d="M2.2 8.8H21.8"></path></svg>New Job</h2>
+<div class="bdd-field">
+  <label>Location</label>
+  <div class="bdd-toggle-row">
+    <button class="bdd-owner-toggle bdd-loc-toggle loc-spr" id="bdd-nloc-spr" onclick="bddSetJobLoc('Springfield')">Springfield</button>
+    <button class="bdd-owner-toggle bdd-loc-toggle loc-riv" id="bdd-nloc-riv" onclick="bddSetJobLoc('Riverside')">Riverside</button>
+  </div>
+</div>
+<div class="bdd-two-col" style="margin-bottom:10px;">
+  <div class="bdd-field" style="margin-bottom:0;">
+    <label>Description</label>
+    <input type="text" id="bdd-desc" placeholder="e.g. Honda Civic - Full Detail">
+  </div>
+  <div class="bdd-field" style="margin-bottom:0;">
+    <label>Date</label>
+    <input type="date" id="bdd-job-date">
+  </div>
+</div>
+<div class="bdd-two-col" style="margin-bottom:10px;">
+  <div class="bdd-field" style="margin-bottom:0;">
+    <label>Job Price</label>
+    <input type="number" id="bdd-price" placeholder="0.00" min="0" step="1" oninput="bddCalc()">
+  </div>
+  <div class="bdd-field" style="margin-bottom:0;">
+    <label>Tips (tracking only)</label>
+    <input type="number" id="bdd-tips" placeholder="0.00" min="0" step="1" oninput="bddCalc()">
+  </div>
+</div>
+<label class="bdd-checkbox-row">
+  <input type="checkbox" id="bdd-taxable" onchange="bddCalc()">
+  <span>Taxable - withhold 8.75%</span>
+</label>
+<label class="bdd-checkbox-row">
+  <input type="checkbox" id="bdd-referral" onchange="bddToggleReferral()">
+  <span>Referral Job</span>
+</label>
+<div id="bdd-referral-section" style="display:none;">
+  <div class="bdd-two-col" style="margin-bottom:10px;">
+    <div class="bdd-field" style="margin-bottom:0;">
+      <label>Referred By</label>
+      <div class="bdd-toggle-row" style="margin-bottom:0;">
+        <button class="bdd-owner-toggle" id="bdd-ref-devon" onclick="bddSetReferrer('devon')">Devon</button>
+        <button class="bdd-owner-toggle" id="bdd-ref-priya" onclick="bddSetReferrer('priya')">Priya</button>
+        <button class="bdd-owner-toggle" id="bdd-ref-marco" onclick="bddSetReferrer('marco')">Marco</button>
+        <button class="bdd-owner-toggle" id="bdd-ref-theo" onclick="bddSetReferrer('theo')">Theo</button>
+      </div>
+    </div>
+    <div class="bdd-field" style="margin-bottom:0;">
+      <label>Referral Bonus</label>
+      <input type="number" id="bdd-referral-amt" placeholder="0.00" min="0" step="1">
+    </div>
+  </div>
+</div>
+
+<div class="bdd-perf"></div>
+
+<div class="bdd-field">
+  <label>Owners Present</label>
+  <div class="bdd-toggle-row">
+    <button class="bdd-owner-toggle" id="bdd-q-btn" onclick="bddToggleOwner('q')">Jordan</button>
+    <button class="bdd-owner-toggle" id="bdd-l-btn" onclick="bddToggleOwner('l')">Avery</button>
+  </div>
+</div>
+<div class="bdd-field">
+  <label>Regional Manager (on-site)</label>
+  <div class="bdd-toggle-row">
+    <button class="bdd-owner-toggle" id="bdd-mgr-harlan" onclick="bddSetManager('harlan')">Harlan</button>
+    <button class="bdd-owner-toggle" id="bdd-mgr-sawyer" onclick="bddSetManager('sawyer')">Sawyer</button>
+  </div>
+  <div class="bdd-flat-row">
+    <input type="number" class="bdd-flat-input" id="bdd-mgr-flat" placeholder="Manager flat $" min="0" step="1" oninput="bddCalc()">
+  </div>
+</div>
+<div class="bdd-field">
+  <label>Employees</label>
+  <div class="bdd-toggle-row">
+    <button class="bdd-owner-toggle" id="bdd-devon-btn" onclick="bddToggleEmp('devon')">Devon</button>
+    <button class="bdd-owner-toggle" id="bdd-priya-btn" onclick="bddToggleEmp('priya')">Priya</button>
+    <button class="bdd-owner-toggle" id="bdd-marco-btn" onclick="bddToggleEmp('marco')">Marco</button>
+    <button class="bdd-owner-toggle" id="bdd-theo-btn" onclick="bddToggleEmp('theo')">Theo</button>
+  </div>
+  <div class="bdd-flat-row">
+    <input type="number" class="bdd-flat-input" id="bdd-devon-flat" placeholder="Devon flat $" min="0" step="1" oninput="bddCalc()">
+    <input type="number" class="bdd-flat-input" id="bdd-priya-flat" placeholder="Priya flat $" min="0" step="1" oninput="bddCalc()">
+    <input type="number" class="bdd-flat-input" id="bdd-marco-flat" placeholder="Marco flat $" min="0" step="1" oninput="bddCalc()">
+    <input type="number" class="bdd-flat-input" id="bdd-theo-flat" placeholder="Theo flat $" min="0" step="1" oninput="bddCalc()">
+  </div>
+</div>
+
+<div id="bdd-custom-split" style="display:none;">
+  <div class="bdd-custom-split-wrap">
+    <div class="bdd-bkd-title" style="color:var(--acc);">Owner / Business Split <span id="bdd-remainder-lbl" style="color:#555;font-weight:400;font-size:9px;"></span></div>
+    <div class="bdd-custom-pct-row">
+      <div class="bdd-custom-pct-item" id="bdd-cpct-q" style="display:none;">
+        <label>Jordan</label>
+        <div class="bdd-pct-input-wrap">
+          <input type="number" id="bdd-pct-q" placeholder="0" min="0" max="100" step="1" oninput="bddCalc()">
+          <span>%</span>
+        </div>
+      </div>
+      <div class="bdd-custom-pct-item" id="bdd-cpct-l" style="display:none;">
+        <label>Avery</label>
+        <div class="bdd-pct-input-wrap">
+          <input type="number" id="bdd-pct-l" placeholder="0" min="0" max="100" step="1" oninput="bddCalc()">
+          <span>%</span>
+        </div>
+      </div>
+      <div class="bdd-custom-pct-item">
+        <label>Business</label>
+        <div class="bdd-pct-input-wrap">
+          <input type="number" id="bdd-pct-biz" placeholder="0" min="0" max="100" step="1" oninput="bddCalc()">
+          <span>%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bdd-perf"></div>
+
+<div class="bdd-breakdown">
+  <div class="bdd-bkd-title">Payout Breakdown</div>
+  <div id="bdd-breakdown-body"><div class="bdd-bkd-placeholder">Select owners, employees, or a manager to calculate</div></div>
+</div>
+<label class="bdd-checkbox-row" style="margin-bottom:14px;">
+  <input type="checkbox" id="bdd-paidout">
+  <span>Paid Out</span>
+</label>
+<button class="bdd-save-btn" id="bdd-save-btn" onclick="bddSaveJob()">Save Job to History</button>
+</div>
+</div>
+</div>
+
+<div class="bdd-divider"></div>
+
+<!-- HISTORY -->
+<div class="bdd-history-hdr">
+  <h2 style="margin-bottom:0;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M5.6 3.2H18.4L21.8 8.8 12 21 2.2 8.8Z"></path><path d="M2.2 8.8H21.8"></path></svg>Job History</h2>
+  <div class="bdd-hdr-right">
+    <button class="bdd-sort-btn" id="bdd-sort-btn" onclick="bddToggleSort()">↓ Newest First</button>
+    <button class="bdd-danger-btn" onclick="bddOpenDanger()">Clear all</button>
+  </div>
+</div>
+<div class="bdd-danger-panel" id="bdd-danger-panel">
+  <div class="bdd-danger-inner">
+    <div class="bdd-danger-title">⚠ Delete all history?</div>
+    <div class="bdd-danger-desc">This permanently erases ALL saved jobs for BOTH locations (Springfield and Riverside) and cannot be undone.</div>
+    <label>Type DELETE HISTORY to confirm</label>
+    <input type="text" class="bdd-danger-input" id="bdd-danger-input" oninput="bddCheckDanger()" placeholder="DELETE HISTORY" autocomplete="off">
+    <div class="bdd-danger-actions">
+      <button class="bdd-danger-cancel" onclick="bddCloseDanger()">Cancel</button>
+      <button class="bdd-danger-confirm" id="bdd-danger-confirm" onclick="bddConfirmDanger()">Delete Forever</button>
+    </div>
+  </div>
+</div>
+<div class="bdd-timeline" id="bdd-timeline"><div class="bdd-empty">Loading...</div></div>
+
+</div>
+<div id="bdd-toast-bdd"></div>
+
+<script src="https://example.com/bdd-calc.js?v=8"></script>
+</div>
+<!-- End BDD Payout Calculator + Job Tracker -->

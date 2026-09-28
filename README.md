@@ -30,9 +30,9 @@ summary automatically.
 
 ## Screenshots
 
-> ⚠️ **All data shown below is fictional** — sample/placeholder values for this portfolio version,
-> not real production numbers, inventory, or requests. Business name, location, and staff names in
-> these screenshots are the same fictional placeholders used throughout the code.
+> These are real screenshots of the live tool in production, including the real business name and
+> team — unlike the code above, they haven't been sanitized. Numbers shown (net profit, stock
+> counts, etc.) reflect whatever the tool's actual state was at the time of capture.
 
 **Payout Calculator** — job entry, live splits, and the payout tracker:
 ![Payout Calculator screenshot](screenshots/payout-calculator.png)
